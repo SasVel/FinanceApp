@@ -1,8 +1,8 @@
-﻿using FinanceApp.Core.Models;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using FinanceApp.Models;
 using System.Diagnostics;
 
-namespace FinanceApp.Core.Controllers
+namespace FinanceApp.Controllers
 {
     public class HomeController : Controller
     {
@@ -18,10 +18,7 @@ namespace FinanceApp.Core.Controllers
             return View();
         }
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
+       
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
