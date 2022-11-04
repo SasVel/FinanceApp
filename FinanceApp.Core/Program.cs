@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using FinanceApp.Data;
 using FinanceApp.Data.Models;
+using FinanceApp.Services.Contracts;
+using FinanceApp.Services.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,6 +27,8 @@ builder.Services.ConfigureApplicationCookie(options =>
 });
 
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddScoped<IPaymentService, PaymentService>();
 
 var app = builder.Build();
 

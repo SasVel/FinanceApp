@@ -13,5 +13,10 @@
             public const decimal CostMinRange = 0.1m;
         }
 
+        public static class PaymentType
+        {
+            public const int NameMaxLen = 20;
+            public const int NameMinLen = 3;
+        }
     }
 }
