@@ -102,7 +102,7 @@ namespace FinanceApp.Controllers
 
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("Index", "Dashboard");
+                    return RedirectToAction("Index", "Home");
                 }
             }
 

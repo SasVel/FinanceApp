@@ -15,10 +15,19 @@ namespace FinanceApp.Controllers
 
         public IActionResult Index()
         {
+            if (User.Identity?.IsAuthenticated ?? false)
+            {
+                return RedirectToAction("IndexLoggedIn");
+            }
             return View();
         }
 
-       
+        public IActionResult IndexLoggedIn()
+        {
+            return View();
+        }
+
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
