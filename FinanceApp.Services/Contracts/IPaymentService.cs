@@ -12,10 +12,14 @@ namespace FinanceApp.Core.Contracts
     /// </summary>
     public interface IPaymentService
     {
-        Task AddPaymentTypeAsync(PaymentType model);
+        Task AddPaymentTypeAsync(PaymentType entry);
+
+        Task AddCurrentPaymentAsync(CurrentPayment entry);
 
         Task<IEnumerable<PaymentType>> GetAllPaymentTypes();
 
+        Task<PaymentType> GetPaymentTypeAsync(int id);
 
+        Task<IEnumerable<CurrentPayment>> GetAllPaymentsByTypeIdAsync(int PaymentTypeId);
     }
 }

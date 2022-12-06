@@ -1,0 +1,16 @@
+﻿@model PaymentTypeViewModel
+
+<h2>This is @Model.Name</h2>
+
+<div class="card" style="width:18rem">
+    <div class="card-header">@ViewBag.Title</div>
+    <ul class="list-group list-group-flush">
+        @foreach (var payment in Model.CurrentPayments)
+        {
+            <li class="list-group-item">
+                N.@payment.Id: @payment.Name
+            </li>
+        }
+    </ul>
+</div>
+<a asp-controller="Payments" asp-action="AddCurrentPayment">Add Payment type</a>

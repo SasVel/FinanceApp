@@ -1,0 +1,7 @@
+﻿@model IEnumerable<PaymentTypeViewModel>
+
+@foreach (var type in Model)
+{
+    <li><a class="dropdown-item" asp-controller="Payments" asp-action="SelectPaymentType" asp-route-id="@type.Id">@type.Name</a></li>
+}
+

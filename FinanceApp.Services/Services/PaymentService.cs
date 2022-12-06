@@ -22,15 +22,23 @@ namespace FinanceApp.Core.Services
             dbContext = _dbContext;
         }
 
-        public async Task AddPaymentTypeAsync(PaymentType model)
+        public async Task AddCurrentPaymentAsync(CurrentPayment entry)
         {
-            var entity = new PaymentType()
-            {
-                Name = model.Name
-            };
-
-            await dbContext.PaymentTypes.AddAsync(entity);
+            await dbContext.CurrentPayments.AddAsync(entry);
             await dbContext.SaveChangesAsync();
+        }
+
+        public async Task AddPaymentTypeAsync(PaymentType entry)
+        {
+            await dbContext.PaymentTypes.AddAsync(entry);
+            await dbContext.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<CurrentPayment>> GetAllPaymentsByTypeIdAsync(int PaymentTypeId)
+        {
+            var entities = await dbContext.CurrentPayments.Where(p => p.PaymentTypeId == PaymentTypeId).ToArrayAsync();
+
+            return entities;
         }
 
         public async Task<IEnumerable<PaymentType>> GetAllPaymentTypes()
@@ -39,5 +47,14 @@ namespace FinanceApp.Core.Services
 
             return entities;
         }
+
+        public async Task<PaymentType> GetPaymentTypeAsync(int id)
+        {
+            var entitity = await dbContext.PaymentTypes.Where(e => e.Id == id).FirstAsync();
+
+            return entitity;
+        }
+
+
     }
 }

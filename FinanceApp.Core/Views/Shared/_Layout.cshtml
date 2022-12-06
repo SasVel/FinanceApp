@@ -35,10 +35,7 @@
 
                                   <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuLink">
                                     <li><a class="dropdown-item" asp-controller="Payments" asp-action="Index">Main</a></li>
-                                        @{
-                                            
-                                            
-                                        };
+                                        @await Component.InvokeAsync("PaymentTypeLoad")
                                   </ul>
                                 </div>
                             </li>
