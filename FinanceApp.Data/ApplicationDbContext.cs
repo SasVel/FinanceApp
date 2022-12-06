@@ -1,8 +1,8 @@
-﻿using FinanceApp.Data.Models;
+﻿using FinanceApp.Infrastructure.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace FinanceApp.Data
+namespace FinanceApp.Infrastructure
 {
     public class ApplicationDbContext : IdentityDbContext
     {

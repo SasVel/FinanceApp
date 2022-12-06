@@ -1,23 +1,25 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using FinanceApp.Data;
-using FinanceApp.Data.Models;
-using FinanceApp.Services.Contracts;
-using FinanceApp.Services.Services;
+using FinanceApp.Infrastructure;
+using FinanceApp.Infrastructure.Models;
+using FinanceApp.Core.Contracts;
+using FinanceApp.Core.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(connectionString, b => b.MigrationsAssembly("FinanceApp.Data")));
+    options.UseSqlServer(connectionString, b => b.MigrationsAssembly("FinanceApp.Infrastructure")));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddDefaultIdentity<User>(options =>
 {
-    options.SignIn.RequireConfirmedAccount = false;
-    options.Password.RequiredLength = 5;
-    options.Password.RequireNonAlphanumeric = false;
+    options.SignIn.RequireConfirmedAccount = builder.Configuration.GetValue<bool>("Identity:RequireConfirmedAccount");
+    options.SignIn.RequireConfirmedEmail= builder.Configuration.GetValue<bool>("Identity:RequireConfirmedEmail");
+    options.Password.RequireNonAlphanumeric = builder.Configuration.GetValue<bool>("Identity:RequireNonAlphanumeric");
+    options.Password.RequireDigit = builder.Configuration.GetValue<bool>("Identity:RequireDigit");
+    options.Password.RequiredLength = builder.Configuration.GetValue<int>("Identity:RequiredLength");
 })
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
@@ -27,8 +29,9 @@ builder.Services.ConfigureApplicationCookie(options =>
 });
 
 builder.Services.AddControllersWithViews();
+builder.Services.AddApplicationServices();
 
-builder.Services.AddScoped<IPaymentService, PaymentService>();
+
 
 var app = builder.Build();
 

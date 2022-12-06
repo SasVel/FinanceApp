@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using static FinanceApp.Data.DataConstants.PaymentType;
+using static FinanceApp.Infrastructure.DataConstants.PaymentType;
 
 namespace FinanceApp.Models
 {

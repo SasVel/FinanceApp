@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace FinanceApp.Data.Migrations
+namespace FinanceApp.Infrastructure.Migrations
 {
     public partial class Init : Migration
     {

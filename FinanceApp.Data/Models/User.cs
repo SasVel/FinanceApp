@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace FinanceApp.Data.Models
+namespace FinanceApp.Infrastructure.Models
 {
     public class User : IdentityUser
     {

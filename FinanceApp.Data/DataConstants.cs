@@ -1,4 +1,4 @@
-﻿namespace FinanceApp.Data
+﻿namespace FinanceApp.Infrastructure
 {
     public static class DataConstants
     {

@@ -1,6 +1,6 @@
-﻿using FinanceApp.Data.Models;
+﻿using FinanceApp.Infrastructure.Models;
 using FinanceApp.Models;
-using FinanceApp.Services.Contracts;
+using FinanceApp.Core.Contracts;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FinanceApp.Controllers

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace FinanceApp.Data.Models
+namespace FinanceApp.Infrastructure.Models
 {
     public class PaymentType
     {

@@ -1,6 +1,6 @@
-﻿using FinanceApp.Data;
-using FinanceApp.Data.Models;
-using FinanceApp.Services.Contracts;
+﻿using FinanceApp.Infrastructure;
+using FinanceApp.Infrastructure.Models;
+using FinanceApp.Core.Contracts;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FinanceApp.Services.Services
+namespace FinanceApp.Core.Services
 {
     public class PaymentService : IPaymentService
     {

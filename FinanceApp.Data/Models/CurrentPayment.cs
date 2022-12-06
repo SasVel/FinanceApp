@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using static FinanceApp.Data.DataConstants.CurrentBudget;
+using static FinanceApp.Infrastructure.DataConstants.CurrentBudget;
 
-namespace FinanceApp.Data.Models
+namespace FinanceApp.Infrastructure.Models
 {
     public class CurrentPayment
     {

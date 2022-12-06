@@ -5,11 +5,9 @@ VisualStudioVersion = 17.2.32616.157
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FinanceApp", "FinanceApp.Core\FinanceApp.csproj", "{608D6279-13CE-439D-B86D-BE24F3251C00}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FinanceApp.Data", "FinanceApp.Data\FinanceApp.Data.csproj", "{3EFF80EC-D03B-4E76-A1BD-3826BCE019D7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FinanceApp.Infrastructure", "FinanceApp.Data\FinanceApp.Infrastructure.csproj", "{3EFF80EC-D03B-4E76-A1BD-3826BCE019D7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FinanceApp.Api", "FinanceApp.Api\FinanceApp.Api.csproj", "{1AC2F585-6EAB-401E-873F-7761C6D67E04}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinanceApp.Services", "FinanceApp.Services\FinanceApp.Services.csproj", "{3A87BF58-AF84-46AF-908C-8A42FF130104}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FinanceApp.Core", "FinanceApp.Services\FinanceApp.Core.csproj", "{3A87BF58-AF84-46AF-908C-8A42FF130104}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,10 +23,6 @@ Global
 		{3EFF80EC-D03B-4E76-A1BD-3826BCE019D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3EFF80EC-D03B-4E76-A1BD-3826BCE019D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3EFF80EC-D03B-4E76-A1BD-3826BCE019D7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1AC2F585-6EAB-401E-873F-7761C6D67E04}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1AC2F585-6EAB-401E-873F-7761C6D67E04}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1AC2F585-6EAB-401E-873F-7761C6D67E04}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1AC2F585-6EAB-401E-873F-7761C6D67E04}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3A87BF58-AF84-46AF-908C-8A42FF130104}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3A87BF58-AF84-46AF-908C-8A42FF130104}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3A87BF58-AF84-46AF-908C-8A42FF130104}.Release|Any CPU.ActiveCfg = Release|Any CPU

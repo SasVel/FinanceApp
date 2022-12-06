@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace FinanceApp.Data.Models
+namespace FinanceApp.Infrastructure.Models
 {
     public class BudgetsHistory
     {
