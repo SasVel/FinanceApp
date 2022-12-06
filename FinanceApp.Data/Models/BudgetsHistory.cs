@@ -3,6 +3,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FinanceApp.Infrastructure.Models
 {
+    /// <summary>
+    /// A data model for the history of monthly budgets
+    /// </summary>
     public class BudgetsHistory
     {
         [Key]

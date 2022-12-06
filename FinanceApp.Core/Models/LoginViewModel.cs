@@ -2,6 +2,9 @@
 
 namespace FinanceApp.Models
 {
+    /// <summary>
+    /// A view model for logging in
+    /// </summary>
     public class LoginViewModel
     {
         [Required]

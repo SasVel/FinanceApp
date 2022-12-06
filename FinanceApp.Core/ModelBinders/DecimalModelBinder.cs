@@ -3,6 +3,9 @@ using System.Globalization;
 
 namespace FinanceApp.ModelBinders
 {
+    /// <summary>
+    /// Model binder normalizing decimal values
+    /// </summary>
     public class DecimalModelBinder : IModelBinder
     {
         public Task BindModelAsync(ModelBindingContext bindingContext)

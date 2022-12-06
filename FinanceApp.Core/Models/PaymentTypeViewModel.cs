@@ -3,6 +3,9 @@ using static FinanceApp.Infrastructure.DataConstants.PaymentType;
 
 namespace FinanceApp.Models
 {
+    /// <summary>
+    /// A view model for payment types
+    /// </summary>
     public class PaymentTypeViewModel
     {
         [Key]

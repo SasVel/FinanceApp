@@ -4,11 +4,17 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FinanceApp.Infrastructure
 {
+    /// <summary>
+    /// The main database context in the application. Establishes connection to the database.
+    /// </summary>
     public class ApplicationDbContext : IdentityDbContext
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
+
+
+
         }
 
         public DbSet<BudgetsHistory> BudgetsHistory { get; set; }

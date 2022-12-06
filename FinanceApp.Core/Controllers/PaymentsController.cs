@@ -5,6 +5,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FinanceApp.Controllers
 {
+    /// <summary>
+    /// Controller for the Payments pages
+    /// </summary>
     public class PaymentsController : Controller
     {
         private readonly IPaymentService paymentService;

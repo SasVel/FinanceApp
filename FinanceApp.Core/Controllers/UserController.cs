@@ -6,6 +6,9 @@ using FinanceApp.Models;
 
 namespace FinanceApp.Controllers
 {
+    /// <summary>
+    /// A controller for the User pages.
+    /// </summary>
     [Authorize]
     public class UserController : Controller
     {

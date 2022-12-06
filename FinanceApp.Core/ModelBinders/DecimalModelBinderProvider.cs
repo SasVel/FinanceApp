@@ -2,6 +2,9 @@
 
 namespace FinanceApp.ModelBinders
 {
+    /// <summary>
+    /// A provider for the decimal model binder
+    /// </summary>
     public class DecimalModelBinderProvider : IModelBinderProvider
     {
         public IModelBinder? GetBinder(ModelBinderProviderContext context)

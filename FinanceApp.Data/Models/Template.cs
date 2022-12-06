@@ -2,6 +2,9 @@
 
 namespace FinanceApp.Infrastructure.Models
 {
+    /// <summary>
+    /// A data model for a template for saving singular payments
+    /// </summary>
     public class Template
     {
         [Key]

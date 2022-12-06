@@ -2,6 +2,9 @@
 
 namespace FinanceApp.Infrastructure.Models
 {
+    /// <summary>
+    /// A data model of a type of payment available
+    /// </summary>
     public class PaymentType
     {
         [Key]

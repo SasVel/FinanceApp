@@ -4,6 +4,9 @@ using System.Diagnostics;
 
 namespace FinanceApp.Controllers
 {
+    /// <summary>
+    /// Controller for the Home page
+    /// </summary>
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;

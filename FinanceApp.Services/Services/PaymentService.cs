@@ -10,6 +10,9 @@ using System.Threading.Tasks;
 
 namespace FinanceApp.Core.Services
 {
+    /// <summary>
+    /// A service for all actions connected to payments
+    /// </summary>
     public class PaymentService : IPaymentService
     {
         public readonly ApplicationDbContext dbContext;

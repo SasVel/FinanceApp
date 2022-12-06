@@ -4,6 +4,9 @@ using static FinanceApp.Infrastructure.DataConstants.CurrentBudget;
 
 namespace FinanceApp.Infrastructure.Models
 {
+    /// <summary>
+    /// A data model for a current payment in the monthly budget
+    /// </summary>
     public class CurrentPayment
     {
         [Key]

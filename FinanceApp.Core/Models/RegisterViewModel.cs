@@ -2,6 +2,9 @@
 
 namespace FinanceApp.Models
 {
+    /// <summary>
+    /// A view model for registering new users
+    /// </summary>
     public class RegisterViewModel
     {
         [Required]
