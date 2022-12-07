@@ -6,23 +6,30 @@ namespace FinanceApp.Controllers.ViewComponents
 {
     public class PaymentTypeLoadViewComponent : ViewComponent
     {
-        private readonly IPaymentService paymentService;
+        private readonly IPaymentTypeService paymentTypeService;
 
-        public PaymentTypeLoadViewComponent(IPaymentService paymentService)
+        public PaymentTypeLoadViewComponent(IPaymentTypeService paymentTypeService)
         {
-            this.paymentService = paymentService;
+            this.paymentTypeService = paymentTypeService;
         }
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            var entities = await paymentService.GetAllPaymentTypes();
-            var models = entities.Select(e => new PaymentTypeViewModel()
+            var entities = await paymentTypeService.GetAllPaymentTypes();
+            if (entities != null)
             {
-                Id = e.Id,
-                Name = e.Name,
-            });
-
-            return View(models);
+                var models = entities.Select(e => new PaymentTypeViewModel()
+                {
+                    Id = e.Id,
+                    Name = e.Name,
+                });
+                return View(models);
+            }
+            else
+            {
+                var models = new List<PaymentTypeViewModel>();
+                return View(models);
+            }
         }
 
     }

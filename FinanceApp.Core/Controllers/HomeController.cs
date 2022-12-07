@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using FinanceApp.Models;
 using System.Diagnostics;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FinanceApp.Controllers
 {
@@ -25,6 +26,7 @@ namespace FinanceApp.Controllers
             return View();
         }
 
+        [Authorize]
         public IActionResult IndexLoggedIn()
         {
             return View();

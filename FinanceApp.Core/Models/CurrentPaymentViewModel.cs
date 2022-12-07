@@ -23,7 +23,7 @@ namespace FinanceApp.Models
         public bool IsSignular { get; set; }
 
         [Required]
-        public bool IsPayedFor { get; set; }
+        public bool IsPaidFor { get; set; }
 
         public int? PaymentTypeId { get; set; }
     }

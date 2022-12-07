@@ -13,6 +13,7 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             services.AddScoped<IRepository, Repository>();
             services.AddScoped<IPaymentService, PaymentService>(); 
+            services.AddScoped<IPaymentTypeService, PaymentTypeService>();
 
             return services;
         }

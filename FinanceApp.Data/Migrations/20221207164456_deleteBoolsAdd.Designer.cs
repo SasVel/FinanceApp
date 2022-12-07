@@ -4,6 +4,7 @@ using FinanceApp.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FinanceApp.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221207164456_deleteBoolsAdd")]
+    partial class deleteBoolsAdd
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -54,7 +56,7 @@ namespace FinanceApp.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("BudgetsHistory", (string)null);
+                    b.ToTable("BudgetsHistory");
                 });
 
             modelBuilder.Entity("FinanceApp.Infrastructure.Models.CurrentPayment", b =>
@@ -100,7 +102,7 @@ namespace FinanceApp.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("CurrentPayments", (string)null);
+                    b.ToTable("CurrentPayments");
                 });
 
             modelBuilder.Entity("FinanceApp.Infrastructure.Models.PaymentType", b =>
@@ -120,7 +122,7 @@ namespace FinanceApp.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("PaymentTypes", (string)null);
+                    b.ToTable("PaymentTypes");
 
                     b.HasData(
                         new
@@ -158,7 +160,7 @@ namespace FinanceApp.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Templates", (string)null);
+                    b.ToTable("Templates");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

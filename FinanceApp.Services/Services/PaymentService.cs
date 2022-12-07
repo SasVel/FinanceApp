@@ -28,11 +28,7 @@ namespace FinanceApp.Core.Services
             await dbContext.SaveChangesAsync();
         }
 
-        public async Task AddPaymentTypeAsync(PaymentType entry)
-        {
-            await dbContext.PaymentTypes.AddAsync(entry);
-            await dbContext.SaveChangesAsync();
-        }
+
 
         public async Task<IEnumerable<CurrentPayment>> GetAllCurrentPayments()
         {
@@ -48,12 +44,6 @@ namespace FinanceApp.Core.Services
             return entities;
         }
 
-        public async Task<IEnumerable<PaymentType>> GetAllPaymentTypes()
-        {
-            var entities = await dbContext.PaymentTypes.ToArrayAsync();
-
-            return entities;
-        }
         /// <summary>
         /// Gets the payments that are paid or not. True for paid, false for not paid for.
         /// </summary>
@@ -87,21 +77,36 @@ namespace FinanceApp.Core.Services
             }
         }
 
-        public async Task<PaymentType> GetPaymentTypeAsync(int id)
+        public async Task<decimal?> GetUsersCurrentBudget(string id)
         {
-            var entitity = await dbContext.PaymentTypes.Where(e => e.Id == id).FirstAsync();
+            var fullBudget = await GetUsersFullMonthlyBudget(id);
+            var donePaymentsSum = await dbContext.CurrentPayments.Where(p => p.IsPaidFor == true).Select(p => p.Cost).SumAsync();
 
-            return entitity;
+            return fullBudget - donePaymentsSum;
         }
 
-        //public async Task<decimal> GetUsersMonthlyBudget(string id)
-        //{
-        //    return await dbContext.Users.FirstOrDefaultAsync(u => u.Id == id);
-        //}
-
-        public Task SetUsersMonthlyBudget(decimal newBudget)
+        public async Task<decimal?> GetUsersEstimatedBudget(string id)
         {
-            throw new NotImplementedException();
+            var fullBudget = await GetUsersFullMonthlyBudget(id);
+            var allPaymentsSum = await dbContext.CurrentPayments.Select(p => p.Cost).SumAsync();
+
+            return fullBudget - allPaymentsSum;
+        }
+
+        public async Task<decimal?> GetUsersFullMonthlyBudget(string id)
+        {
+            var user = await dbContext.Users.Where(u => u.Id == id).FirstOrDefaultAsync();
+            var budget = user?.MonthlyBudget;
+            return budget;
+        }
+
+        public async Task SetUsersMonthlyBudget(string id, decimal newBudget)
+        {
+            var user = await dbContext.Users.Where(u => u.Id == id).FirstAsync();
+            user.MonthlyBudget = newBudget;
+
+            await dbContext.SaveChangesAsync();
+
         }
     }
 }

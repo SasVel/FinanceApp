@@ -1,9 +1,4 @@
 ﻿using FinanceApp.Infrastructure.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FinanceApp.Core.Contracts
 {
@@ -18,18 +13,19 @@ namespace FinanceApp.Core.Contracts
 
         Task<IEnumerable<CurrentPayment>> GetCurrentPaymentsIsPaidFor(bool isPaid);
 
-        //Task<decimal> GetUsersMonthlyBudget(string id);
+        Task<decimal?> GetUsersFullMonthlyBudget(string id);
 
-        Task SetUsersMonthlyBudget(decimal newBudget);
+        Task<decimal?> GetUsersCurrentBudget(string id);
 
-        Task AddPaymentTypeAsync(PaymentType entry);
+        Task<decimal?> GetUsersEstimatedBudget(string id);
+
+        Task SetUsersMonthlyBudget(string id, decimal newBudget);
 
         Task AddCurrentPaymentAsync(CurrentPayment entry);
 
-        Task<IEnumerable<PaymentType>> GetAllPaymentTypes();
-
-        Task<PaymentType> GetPaymentTypeAsync(int id);
-
         Task<IEnumerable<CurrentPayment>> GetAllPaymentsByTypeIdAsync(int PaymentTypeId);
+
+
+
     }
 }

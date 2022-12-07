@@ -28,6 +28,8 @@ namespace FinanceApp.Infrastructure.Models
 
         public bool IsPaidFor { get; set; }
 
+        public bool IsActive { get; set; }
+
         [ForeignKey(nameof(User))]
         public string UserId { get; set; }
         public User User { get; set; }

@@ -16,3 +16,11 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.vertical {
+    border-left: 2.5px solid black;
+    height: 70px;
+    width: 5px;
+    position: absolute;
+    left: 50%;
+}

@@ -13,6 +13,8 @@ namespace FinanceApp.Infrastructure.Models
         [Required]
         public string Name { get; set; }
 
+        public bool IsActive { get; set; }
+
         public List<CurrentPayment> Payments { get; set; } = new List<CurrentPayment>();
     }
 }

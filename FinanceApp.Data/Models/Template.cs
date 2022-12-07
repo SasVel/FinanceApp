@@ -21,5 +21,7 @@ namespace FinanceApp.Infrastructure.Models
 
         [Required]
         public int Quantity { get; set; }
+
+        public bool IsActive { get; set; }
     }
 }

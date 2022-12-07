@@ -3,25 +3,29 @@ using FinanceApp.Models;
 using FinanceApp.Core.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FinanceApp.Controllers
 {
     /// <summary>
     /// Controller for the Payments pages
     /// </summary>
+    [Authorize]
     public class PaymentsController : Controller
     {
         private readonly IPaymentService paymentService;
+        private readonly IPaymentTypeService paymentTypeService;
         private readonly UserManager<User> userManager;
 
-        public PaymentsController(IPaymentService _paymentService, UserManager<User> _userManager)
+        public PaymentsController(IPaymentService _paymentService, IPaymentTypeService _paymentTypeService, UserManager<User> _userManager)
         {
             paymentService = _paymentService;
+            paymentTypeService = _paymentTypeService;
             userManager = _userManager;
         }
         public async Task<IActionResult> Index()
         {
-            var entities = await paymentService.GetAllPaymentTypes();
+            var entities = await paymentTypeService.GetAllPaymentTypes();
             var models = entities.Select(x => new PaymentTypeViewModel()
             {
                 Id = x.Id,
@@ -33,7 +37,7 @@ namespace FinanceApp.Controllers
 
         public async Task<IActionResult> SelectPaymentType(int id)
         {
-            var entity = await paymentService.GetPaymentTypeAsync(id);
+            var entity = await paymentTypeService.GetPaymentTypeAsync(id);
             var payments = await paymentService.GetAllPaymentsByTypeIdAsync(id);
             var model = new PaymentTypeViewModel()
             {
@@ -47,7 +51,7 @@ namespace FinanceApp.Controllers
                         Description = p.Description,
                         Cost = p.Cost,
                         IsSignular = p.IsSignular,
-                        IsPayedFor = p.IsPaidFor,
+                        IsPaidFor = p.IsPaidFor,
                     })
             };
 
@@ -73,7 +77,8 @@ namespace FinanceApp.Controllers
                 IsSignular = model.IsSignular,
                 UserId = currentUser.Id,
                 //TODO: Fix in the future. model.PaymentTypeId => model.Id for some reason
-                PaymentTypeId = model.Id
+                PaymentTypeId = model.Id,
+                IsActive = true
             };
 
             await paymentService.AddCurrentPaymentAsync(entry);
@@ -92,10 +97,19 @@ namespace FinanceApp.Controllers
         {
             var entry = new PaymentType()
             {
-                Name = model.Name
+                Name = model.Name,
+                IsActive = true
             };
 
-            await paymentService.AddPaymentTypeAsync(entry);
+            await paymentTypeService.AddPaymentTypeAsync(entry);
+
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> DeletePaymentType(int id)
+        {
+            await paymentTypeService.DeletePaymentType(id);
 
             return RedirectToAction("Index");
         }
