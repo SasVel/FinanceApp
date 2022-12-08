@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32616.157
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FinanceApp", "FinanceApp.Core\FinanceApp.csproj", "{608D6279-13CE-439D-B86D-BE24F3251C00}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FinanceApp", "FinanceApp\FinanceApp.csproj", "{608D6279-13CE-439D-B86D-BE24F3251C00}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FinanceApp.Infrastructure", "FinanceApp.Data\FinanceApp.Infrastructure.csproj", "{3EFF80EC-D03B-4E76-A1BD-3826BCE019D7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FinanceApp.Infrastructure", "FinanceApp.Infrastructure\FinanceApp.Infrastructure.csproj", "{3EFF80EC-D03B-4E76-A1BD-3826BCE019D7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FinanceApp.Core", "FinanceApp.Services\FinanceApp.Core.csproj", "{3A87BF58-AF84-46AF-908C-8A42FF130104}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FinanceApp.Core", "FinanceApp.Core\FinanceApp.Core.csproj", "{3A87BF58-AF84-46AF-908C-8A42FF130104}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
