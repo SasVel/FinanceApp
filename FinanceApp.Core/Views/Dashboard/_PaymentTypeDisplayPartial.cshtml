@@ -1,0 +1,11 @@
+﻿
+@foreach (var paymentType in Model.PaymentsInfo)
+{
+    <h3>@paymentType.Name</h3>
+    foreach (var payment in paymentType.CurrentPayments)
+    {
+        string isPaid = payment.IsPaidFor ? "Is Paid" : "Is Not Paid"; 
+        <h4>@payment.Name - @payment.Cost - @isPaid</h4>
+        
+    }
+}

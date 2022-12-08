@@ -8,10 +8,8 @@ namespace FinanceApp.Models
     /// </summary>
     public class PaymentTypeViewModel
     {
-        [Key]
         public int Id { get; set; }
 
-        [Required]
         [StringLength(NameMaxLen, MinimumLength = NameMinLen)]
         public string Name { get; set; }
 

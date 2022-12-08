@@ -27,7 +27,7 @@ namespace FinanceApp.Core.Services
 
         public async Task<IEnumerable<PaymentType?>> GetAllPaymentTypes()
         {
-            var entities = await dbContext.PaymentTypes.Where(p => p.IsActive == true).ToArrayAsync();
+            var entities = await dbContext.PaymentTypes.Include(p => p.Payments).Where(p => p.IsActive == true).ToArrayAsync();
 
             return entities;
         }

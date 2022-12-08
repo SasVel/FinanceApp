@@ -14,13 +14,15 @@ namespace FinanceApp.Controllers
     public class DashboardController : Controller
     {
         private readonly IPaymentService paymentService;
+        private readonly IPaymentTypeService paymentTypeService;
         private readonly UserManager<User> userManager;
 
         private decimal? budget;
 
-        public DashboardController(IPaymentService _paymentService, UserManager<User> _userManager)
+        public DashboardController(IPaymentService _paymentService, IPaymentTypeService _paymentTypeService, UserManager<User> _userManager)
         {
             paymentService = _paymentService;
+            paymentTypeService = _paymentTypeService;
             userManager = _userManager;
         }
 
@@ -36,11 +38,29 @@ namespace FinanceApp.Controllers
             {
                 var currentBudget = await paymentService.GetUsersCurrentBudget(currentUser.Id);
                 var estimatedBudget = await paymentService.GetUsersEstimatedBudget(currentUser.Id);
+
+                var paymentTypes = await paymentTypeService.GetAllPaymentTypes();
                 var model = new DashboardViewModel()
                 {
                     FullBudget = (decimal)budget,
                     CurrentBudget = (decimal)currentBudget,
-                    EstimatedBudget = (decimal)estimatedBudget
+                    EstimatedBudget = (decimal)estimatedBudget,
+                    PaymentsInfo = paymentTypes.Select(pt => new PaymentTypeViewModel
+                    {
+                        Id = pt.Id,
+                        Name = pt.Name,
+                        CurrentPayments = pt.Payments.Select(p => new CurrentPaymentViewModel
+                        {
+                            Id = p.Id,
+                            Name = p.Name,
+                            Description = p.Description,
+                            Cost = p.Cost,
+                            IsSignular = p.IsSignular,
+                            IsPaidFor = p.IsPaidFor,
+                            PaymentTypeId = p.PaymentTypeId
+                        })
+
+                    })
                 };
                 return View(model);
             }
