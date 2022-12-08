@@ -1,5 +1,9 @@
 ﻿@model PaymentTypeViewModel
 
+@{
+    ViewData["Title"] = $"{Model.Name}";
+}
+
 <h2>This is @Model.Name</h2>
 
 <div class="card" style="width:18rem">
@@ -13,4 +17,4 @@
         }
     </ul>
 </div>
-<a asp-controller="Payments" asp-action="AddCurrentPayment">Add Payment type</a>
+<a asp-controller="Payments" asp-action="AddCurrentPayment" asp-route-id=@Model.Id>Add Payment</a>

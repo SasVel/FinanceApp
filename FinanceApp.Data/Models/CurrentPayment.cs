@@ -26,7 +26,7 @@ namespace FinanceApp.Infrastructure.Models
         [Required]
         public bool IsSignular { get; set; }
 
-        public bool IsPayedFor { get; set; }
+        public bool IsPaidFor { get; set; }
 
         [ForeignKey(nameof(User))]
         public string UserId { get; set; }

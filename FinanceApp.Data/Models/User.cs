@@ -1,4 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FinanceApp.Infrastructure.Models
 {
@@ -7,6 +10,9 @@ namespace FinanceApp.Infrastructure.Models
     /// </summary>
     public class User : IdentityUser
     {
-        
+        [Required]
+        [Column(TypeName = "money")]
+        [Precision(18,2)]
+        public decimal MonthlyBudget { get; set; }
     }
 }

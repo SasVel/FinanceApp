@@ -12,6 +12,16 @@ namespace FinanceApp.Core.Contracts
     /// </summary>
     public interface IPaymentService
     {
+        Task<IEnumerable<CurrentPayment>> GetAllCurrentPayments();
+
+        Task<IEnumerable<CurrentPayment>> GetCurrentPaymentsSingular(bool isSingular);
+
+        Task<IEnumerable<CurrentPayment>> GetCurrentPaymentsIsPaidFor(bool isPaid);
+
+        //Task<decimal> GetUsersMonthlyBudget(string id);
+
+        Task SetUsersMonthlyBudget(decimal newBudget);
+
         Task AddPaymentTypeAsync(PaymentType entry);
 
         Task AddCurrentPaymentAsync(CurrentPayment entry);

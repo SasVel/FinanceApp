@@ -1,2 +1,6 @@
-﻿
+﻿@{
+    ViewBag.Title = $"{User.Identity?.Name!}'s Home Page";
+    ViewData["Title"] = ViewBag.Title;
+}
+
 <h1>Hello, @User.Identity?.Name!</h1>

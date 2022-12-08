@@ -36,7 +36,6 @@ namespace FinanceApp.Controllers
 
                 return RedirectToAction("Index", "Home");
             }
-
             var model = new RegisterViewModel();
 
             return View(model);

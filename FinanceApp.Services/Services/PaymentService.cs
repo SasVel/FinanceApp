@@ -34,6 +34,13 @@ namespace FinanceApp.Core.Services
             await dbContext.SaveChangesAsync();
         }
 
+        public async Task<IEnumerable<CurrentPayment>> GetAllCurrentPayments()
+        {
+            var entities = await dbContext.CurrentPayments.ToArrayAsync();
+
+            return entities;
+        }
+
         public async Task<IEnumerable<CurrentPayment>> GetAllPaymentsByTypeIdAsync(int PaymentTypeId)
         {
             var entities = await dbContext.CurrentPayments.Where(p => p.PaymentTypeId == PaymentTypeId).ToArrayAsync();
@@ -47,6 +54,38 @@ namespace FinanceApp.Core.Services
 
             return entities;
         }
+        /// <summary>
+        /// Gets the payments that are paid or not. True for paid, false for not paid for.
+        /// </summary>
+        /// <param name="isSingular"></param>
+        /// <returns></returns>
+        public async Task<IEnumerable<CurrentPayment>> GetCurrentPaymentsIsPaidFor(bool isPaid)
+        {
+            if (isPaid)
+            {
+                return await dbContext.CurrentPayments.Where(p => p.IsPaidFor == true).ToArrayAsync();
+            }
+            else
+            {
+                return await dbContext.CurrentPayments.Where(p => p.IsPaidFor == false).ToArrayAsync();
+            }
+        }
+
+        /// <summary>
+        /// Gets the singular or recurring current payments. True for singular, false for recurring
+        /// </summary>
+        /// <returns></returns>
+        public async Task<IEnumerable<CurrentPayment>> GetCurrentPaymentsSingular(bool isSingular)
+        {
+            if (isSingular)
+            {
+                return await dbContext.CurrentPayments.Where(p => p.IsSignular == true).ToArrayAsync();
+            }
+            else
+            {
+                return await dbContext.CurrentPayments.Where(p => p.IsSignular == false).ToArrayAsync();
+            }
+        }
 
         public async Task<PaymentType> GetPaymentTypeAsync(int id)
         {
@@ -55,6 +94,14 @@ namespace FinanceApp.Core.Services
             return entitity;
         }
 
+        //public async Task<decimal> GetUsersMonthlyBudget(string id)
+        //{
+        //    return await dbContext.Users.FirstOrDefaultAsync(u => u.Id == id);
+        //}
 
+        public Task SetUsersMonthlyBudget(decimal newBudget)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

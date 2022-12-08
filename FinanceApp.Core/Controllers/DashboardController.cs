@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FinanceApp.Core.Contracts;
+using Microsoft.AspNetCore.Mvc;
 
 namespace FinanceApp.Controllers
 {
@@ -7,8 +8,17 @@ namespace FinanceApp.Controllers
     /// </summary>
     public class DashboardController : Controller
     {
+        private readonly IPaymentService paymentService;
+
+
+        public DashboardController(IPaymentService _paymentService)
+        {
+            paymentService = _paymentService;
+        }
+
         public IActionResult Index()
         {
+
             return View();
         }
     }

@@ -25,5 +25,6 @@ namespace FinanceApp.Models
         [Required]
         public bool IsPayedFor { get; set; }
 
+        public int? PaymentTypeId { get; set; }
     }
 }
