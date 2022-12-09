@@ -88,7 +88,10 @@ namespace FinanceApp.Core.Services
         public async Task<decimal?> GetUsersEstimatedBudget(string id)
         {
             var fullBudget = await GetUsersFullMonthlyBudget(id);
-            var allPaymentsSum = await dbContext.CurrentPayments.Select(p => p.Cost).SumAsync();
+            var allPaymentsSum = await dbContext.CurrentPayments
+                .Where(p => p.IsActive == true)
+                .Select(p => p.Cost)
+                .SumAsync();
 
             return fullBudget - allPaymentsSum;
         }
@@ -98,6 +101,22 @@ namespace FinanceApp.Core.Services
             var user = await dbContext.Users.Where(u => u.Id == id).FirstOrDefaultAsync();
             var budget = user?.MonthlyBudget;
             return budget;
+        }
+
+        public async Task PayForPayment(int id)
+        {
+            var payment = await dbContext.CurrentPayments.FirstAsync(p => p.Id == id);
+            payment.IsPaidFor = true;
+
+            await dbContext.SaveChangesAsync();
+        }
+
+        public async Task UndoPayment(int id)
+        {
+            var payment = await dbContext.CurrentPayments.FirstAsync(p => p.Id == id);
+            payment.IsPaidFor = false;
+
+            await dbContext.SaveChangesAsync();
         }
 
         public async Task SetUsersMonthlyBudget(string id, decimal newBudget)

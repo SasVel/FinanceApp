@@ -17,10 +17,15 @@ body {
   margin-bottom: 60px;
 }
 
-.vertical {
-    border-left: 2.5px solid black;
-    height: 70px;
-    width: 5px;
-    position: absolute;
-    left: 50%;
+body {
+    /* Centring content */
+    min-height: 100vh;
+    display: grid;
+    place-content: center;
+}
+
+/* Adapts a floating label for use with a left-handed input group icon */
+.form-floating > .bi-calendar-date + .datepicker_input + label {
+    padding-left: 3.5rem;
+    z-index: 3;
 }

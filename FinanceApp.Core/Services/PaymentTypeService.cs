@@ -44,6 +44,11 @@ namespace FinanceApp.Core.Services
             var entity = await dbContext.PaymentTypes.FirstAsync(x => x.Id == Id);
             entity.IsActive = false;
 
+            foreach (var payment in entity.Payments)
+            {
+                payment.IsActive = false;
+            }
+
             await dbContext.SaveChangesAsync();
         }
 

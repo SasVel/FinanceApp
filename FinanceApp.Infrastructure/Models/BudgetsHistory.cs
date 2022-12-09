@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FinanceApp.Infrastructure.Models
@@ -19,6 +20,20 @@ namespace FinanceApp.Infrastructure.Models
 
         [Required]
         public string Description { get; set; }
+
+        [Required]
+        [Column(TypeName = "money")]
+        [Precision(18, 2)]
+        public decimal Price { get; set; }
+
+        [Required]
+        public bool IsSingular { get; set; }
+
+        [Required]
+        public bool IsActive { get; set; }
+
+        [Required]
+        public bool IsPaidFor { get; set; }
 
         [ForeignKey(nameof(User))]
         public string UserId { get; set; }

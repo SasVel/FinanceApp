@@ -78,12 +78,13 @@ namespace FinanceApp.Controllers
                 UserId = currentUser.Id,
                 //TODO: Fix in the future. model.PaymentTypeId => model.Id for some reason
                 PaymentTypeId = model.Id,
-                IsActive = true
+                IsActive = true,
+                EntryDate = DateTime.Now,
             };
 
             await paymentService.AddCurrentPaymentAsync(entry);
 
-            return RedirectToAction("Index");
+            return RedirectToAction("SelectPaymentType", new { id = entry.PaymentTypeId });
         }
 
         [HttpGet]
@@ -102,8 +103,9 @@ namespace FinanceApp.Controllers
             };
 
             await paymentTypeService.AddPaymentTypeAsync(entry);
-
-            return RedirectToAction("Index");
+            var paymentTypes = await paymentTypeService.GetAllPaymentTypes();
+            var id = paymentTypes.Single(pt => pt.Name == entry.Name).Id;
+            return RedirectToAction("SelectPaymentType", new { id });
         }
 
         [HttpGet]
@@ -112,6 +114,20 @@ namespace FinanceApp.Controllers
             await paymentTypeService.DeletePaymentType(id);
 
             return RedirectToAction("Index");
+        }
+
+        public async Task<IActionResult> PayForPayment(int id)
+        {
+            await paymentService.PayForPayment(id);
+
+            return RedirectToAction("Index", "Dashboard");
+        }
+
+        public async Task<IActionResult> UndoPayment(int id)
+        {
+            await paymentService.UndoPayment(id);
+
+            return RedirectToAction("Index", "Dashboard");
         }
 
     }

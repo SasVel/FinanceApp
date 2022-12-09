@@ -25,7 +25,8 @@ namespace FinanceApp.Core.Contracts
 
         Task<IEnumerable<CurrentPayment>> GetAllPaymentsByTypeIdAsync(int PaymentTypeId);
 
+        Task PayForPayment(int id);
 
-
+        Task UndoPayment(int id);
     }
 }

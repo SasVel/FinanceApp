@@ -21,13 +21,18 @@ namespace FinanceApp.Infrastructure.Models
         public string Description { get; set; }
 
         [Required]
+        public DateTime EntryDate { get; set; }
+
+        [Required]
         public decimal Cost { get; set; }
 
         [Required]
         public bool IsSignular { get; set; }
 
+        [Required]
         public bool IsPaidFor { get; set; }
 
+        [Required]
         public bool IsActive { get; set; }
 
         [ForeignKey(nameof(User))]

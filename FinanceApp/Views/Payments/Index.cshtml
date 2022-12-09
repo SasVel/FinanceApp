@@ -8,13 +8,19 @@
 <div class="card" style="width:18rem">
     <div class="card-header">@ViewBag.Title</div>
     <ul class="list-group list-group-flush">
+        @{
+            var counter = 1;
+        }
         @foreach (var product in Model)
         {
             <li class="list-group-item">
-                N.@product.Id: @product.Name
+                N.@counter: @product.Name
             </li>
+            counter++;
         }
     </ul>
 
 </div>
-<a asp-controller="Payments" asp-action="AddPaymentType">Add Payment type</a>
+<button type="button" class="btn m-lg-2 btn-secondary rounded-3" style="padding: 0">
+    <a class="nav-link text-white" asp-controller="Payments" asp-action="AddPaymentType">Add Payment type</a>
+</button>
