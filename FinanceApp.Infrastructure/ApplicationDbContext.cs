@@ -1,4 +1,5 @@
-﻿using FinanceApp.Infrastructure.Models;
+﻿using FinanceApp.Infrastructure.Data.Configuration;
+using FinanceApp.Infrastructure.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,24 +18,23 @@ namespace FinanceApp.Infrastructure
 
         }
 
-        public DbSet<BudgetsHistory> BudgetsHistory { get; set; }
-
-        public DbSet<CurrentPayment> CurrentPayments { get; set; }
+        public DbSet<User> Users { get; set; }
 
         public DbSet<PaymentType> PaymentTypes { get; set; }
 
-        public DbSet<Template> Templates { get; set; }
+        public DbSet<CurrentPayment> CurrentPayments { get; set; }
 
-        public DbSet<User> Users { get; set; }
+        public DbSet<BudgetsHistory> BudgetsHistory { get; set; }
+
+        public DbSet<Template> Templates { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-
-            builder.Entity<PaymentType>().HasData(new PaymentType()
-            {
-                Id = 1,
-                Name = "General"
-            });
+            builder.ApplyConfiguration(new UserConfiguration());
+            builder.ApplyConfiguration(new TemplateConfiguration());
+            builder.ApplyConfiguration(new PaymentTypeConfiguration());
+            builder.ApplyConfiguration(new BudgetsHistoryConfiguration());
+            builder.ApplyConfiguration(new CurrentPaymentConfiguration());
 
             base.OnModelCreating(builder);
         }

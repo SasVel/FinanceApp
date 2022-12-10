@@ -4,6 +4,7 @@ using FinanceApp.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FinanceApp.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221210182440_config")]
+    partial class config
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -179,12 +181,11 @@ namespace FinanceApp.Infrastructure.Migrations
                             Id = 1,
                             Cost = 16.00m,
                             Description = "Pizza takeout.",
-                            EntryDate = new DateTime(2022, 12, 10, 20, 49, 18, 799, DateTimeKind.Local).AddTicks(2327),
+                            EntryDate = new DateTime(2022, 12, 10, 20, 24, 39, 799, DateTimeKind.Local).AddTicks(162),
                             IsActive = true,
                             IsPaidFor = false,
                             IsSignular = true,
                             Name = "Pizza",
-                            PaymentTypeId = 1,
                             UserId = "54b87d10-2354-4185-a731-b73ec2d1d9cb"
                         },
                         new
@@ -192,12 +193,11 @@ namespace FinanceApp.Infrastructure.Migrations
                             Id = 2,
                             Cost = 7.00m,
                             Description = "Bubble tea order.",
-                            EntryDate = new DateTime(2022, 12, 8, 20, 49, 18, 799, DateTimeKind.Local).AddTicks(2359),
+                            EntryDate = new DateTime(2022, 12, 8, 20, 24, 39, 799, DateTimeKind.Local).AddTicks(194),
                             IsActive = true,
                             IsPaidFor = true,
                             IsSignular = true,
                             Name = "Bubble Tea",
-                            PaymentTypeId = 1,
                             UserId = "54b87d10-2354-4185-a731-b73ec2d1d9cb"
                         },
                         new
@@ -205,12 +205,11 @@ namespace FinanceApp.Infrastructure.Migrations
                             Id = 3,
                             Cost = 40.00m,
                             Description = "Meal prep for the week.",
-                            EntryDate = new DateTime(2022, 12, 5, 20, 49, 18, 799, DateTimeKind.Local).AddTicks(2362),
+                            EntryDate = new DateTime(2022, 12, 5, 20, 24, 39, 799, DateTimeKind.Local).AddTicks(197),
                             IsActive = true,
                             IsPaidFor = true,
                             IsSignular = true,
                             Name = "Meal Prep",
-                            PaymentTypeId = 1,
                             UserId = "54b87d10-2354-4185-a731-b73ec2d1d9cb"
                         });
                 });
@@ -238,14 +237,8 @@ namespace FinanceApp.Infrastructure.Migrations
                         new
                         {
                             Id = 1,
-                            IsActive = true,
+                            IsActive = false,
                             Name = "Food Payments"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            IsActive = true,
-                            Name = "Car Payments"
                         });
                 });
 
@@ -514,15 +507,15 @@ namespace FinanceApp.Infrastructure.Migrations
                         {
                             Id = "54b87d10-2354-4185-a731-b73ec2d1d9cb",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "afbac7db-1e9b-478a-b089-c84b7ae50c98",
+                            ConcurrencyStamp = "24219a5d-7f98-4185-94bd-86255ae3f3f8",
                             Email = "guest@mail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "guest@mail.com",
                             NormalizedUserName = "guest_user",
-                            PasswordHash = "AQAAAAEAACcQAAAAEHWmQdGl6EyFlS2ClMhftUFEL3uVIf2MPSCLpWcXngVN3pzOlu41ossFth1JxnS8jg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEJNJkKHTGQh65E1FOaP3RLrLsz9ZE/PCzQVAWdZVYLr7e2Jd/PWVvaGEiWa5hrFI2A==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "acc5fc53-cb5c-4df0-82b2-b7b520872fa9",
+                            SecurityStamp = "0f4a4f85-1ab2-4948-b717-2a4404a19f79",
                             TwoFactorEnabled = false,
                             UserName = "guest_user",
                             MonthlyBudget = 0m

@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using static FinanceApp.Infrastructure.DataConstants.CurrentBudget;
 
 namespace FinanceApp.Infrastructure.Models
 {
@@ -18,7 +19,7 @@ namespace FinanceApp.Infrastructure.Models
         [Required]
         public string Name { get; set; }
 
-        [Required]
+        [StringLength(DescriptionMaxLen)]
         public string Description { get; set; }
 
         [Required]

@@ -29,29 +29,6 @@
     </form>
 </div>
 
-@{
-    if (@Model.Result != null)
-    {
-        for (int i = 0; i < @Model.Result.PaymentsInfo.Count(); i++)
-        {
-            var paymentType = @Model.Result.PaymentsInfo.ElementAt(i);
-    <div class="card" style="width:18rem">
-                <div class="card-header">@ViewBag.Title</div>
-                    <ul class="list-group list-group-flush">
-                        @{
-                        var counter = 1;
-                        }
-                        @foreach (var payment in paymentType.CurrentPayments)
-                    {
-                            <li class="list-group-item">
-                                N.@counter: @payment.Name
-                            </li>
-                        counter++;
-                    }
-                    </ul>
-    </div>
-        }
-    }
-}
+<partial name="_HistoryEntriesPartial" />
 
 

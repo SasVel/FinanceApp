@@ -1,0 +1,29 @@
+﻿@model HistoryViewModel
+
+@{
+   
+    if (@Model.Result != null)
+    {
+        <hr style="margin-left" width="30%" />
+        for (int i = 0; i < @Model.Result.PaymentsInfo.Count(); i++)
+        {
+            var paymentType = @Model.Result.PaymentsInfo.ElementAt(i);
+            <div class="card" style="width:18rem">
+                <div class="card-header">@paymentType.Name</div>
+                <ul class="list-group list-group-flush">
+                    @{
+                        var counter = 1;
+                    }
+                    @foreach (var payment in paymentType.CurrentPayments)
+                    {
+                        var isPaid = payment.IsPaidFor ? "Is Paid" : "Is Not Paid";
+                        <li class="list-group-item">
+                            N.@counter: @payment.Name | @payment.Cost.ToString("F") | @isPaid
+                        </li>
+                        counter++;
+                    }
+                </ul>
+            </div>
+        }
+    }
+}

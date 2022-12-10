@@ -21,21 +21,11 @@ namespace FinanceApp.Controllers
             paymentTypeService = _paymentTypeService;
         }
 
-        public IActionResult Index(DashboardViewModel dashboardModel)
+        [HttpGet]
+        public IActionResult Index()
         {
-            if (dashboardModel.PaymentsInfo == null)
-            {
                 var model = new HistoryViewModel();
                 return View(model);
-            }
-            else
-            {
-                var model = new HistoryViewModel()
-                {
-                    Result = dashboardModel
-                };
-                return View(model);
-            }
         }
 
         [HttpPost]
@@ -58,16 +48,19 @@ namespace FinanceApp.Controllers
                 .Select(pm => pm.PaymentTypeId)
                 .Contains(pt.Id))
                 .ToArray());
-            var dashboardModel = new DashboardViewModel()
+            var historyModel = new HistoryViewModel()
             {
-                PaymentsInfo = paymentTypeEntities.Select(pte => new PaymentTypeViewModel()
+                Result = new DashboardViewModel()
                 {
-                    Id = pte.Id,
-                    Name = pte.Name,
-                    CurrentPayments = paymentModels.Where(pm => pm.PaymentTypeId == pte.Id)
-                })
+                    PaymentsInfo = paymentTypeEntities.Select(pte => new PaymentTypeViewModel()
+                    {
+                        Id = pte.Id,
+                        Name = pte.Name,
+                        CurrentPayments = paymentModels.Where(pm => pm.PaymentTypeId == pte.Id)
+                    })
+                }
             };
-            return RedirectToAction("Index", new { dashboardModel = dashboardModel });
+            return View(historyModel);
         }
     }
 }

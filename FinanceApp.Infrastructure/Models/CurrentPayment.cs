@@ -16,7 +16,6 @@ namespace FinanceApp.Infrastructure.Models
         [StringLength(NameMaxLen)]
         public string Name { get; set; }
 
-        [Required]
         [StringLength(DescriptionMaxLen)]
         public string Description { get; set; }
 
