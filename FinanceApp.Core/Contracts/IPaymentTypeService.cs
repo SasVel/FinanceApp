@@ -11,9 +11,15 @@ namespace FinanceApp.Core.Contracts
 
         Task<PaymentType?> GetPaymentTypeAsync(int id);
 
-        Task<IEnumerable<PaymentType?>> GetAllPaymentTypes();
+        Task<PaymentType> GetInactivePaymentTypeAsync(int id);
+
+        Task<IEnumerable<PaymentType?>> GetAllActivePaymentTypes();
+
+        Task<IEnumerable<PaymentType?>> GetAllInactivePaymentTypes();
 
         Task DeletePaymentType(int Id);
+
+        Task SaveChangesToPaymentTypeAsync();
 
     }
 }

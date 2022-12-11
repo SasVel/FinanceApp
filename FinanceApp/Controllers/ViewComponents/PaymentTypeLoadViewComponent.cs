@@ -15,7 +15,7 @@ namespace FinanceApp.Controllers.ViewComponents
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            var entities = await paymentTypeService.GetAllPaymentTypes();
+            var entities = await paymentTypeService.GetAllActivePaymentTypes();
             if (entities != null)
             {
                 var models = entities.Select(e => new PaymentTypeViewModel()

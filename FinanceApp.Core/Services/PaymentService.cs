@@ -37,9 +37,16 @@ namespace FinanceApp.Core.Services
             return entities;
         }
 
-        public async Task<IEnumerable<CurrentPayment>> GetAllPaymentsByTypeIdAsync(int PaymentTypeId)
+        public async Task<CurrentPayment> GetPaymentAsync(int id)
         {
-            var entities = await dbContext.CurrentPayments.Where(p => p.PaymentTypeId == PaymentTypeId).ToArrayAsync();
+            var entity = await dbContext.CurrentPayments.Where(p => p.Id == id).FirstAsync();
+
+            return entity;
+        }
+
+        public async Task<IEnumerable<CurrentPayment>> GetAllActivePaymentsByTypeIdAsync(int PaymentTypeId)
+        {
+            var entities = await dbContext.CurrentPayments.Where(p => p.PaymentTypeId == PaymentTypeId && p.IsActive == true).ToArrayAsync();
 
             return entities;
         }
@@ -126,6 +133,14 @@ namespace FinanceApp.Core.Services
 
             await dbContext.SaveChangesAsync();
 
+        }
+
+        public async Task DeletePayment(int id)
+        {
+            var entry = dbContext.CurrentPayments.FirstOrDefault(p => p.Id == id);
+            entry.IsActive = false;
+
+            await dbContext.SaveChangesAsync();
         }
     }
 }

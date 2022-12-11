@@ -39,7 +39,7 @@ namespace FinanceApp.Controllers
                 var currentBudget = await paymentService.GetUsersCurrentBudget(currentUser.Id);
                 var estimatedBudget = await paymentService.GetUsersEstimatedBudget(currentUser.Id);
 
-                var paymentTypes = await paymentTypeService.GetAllPaymentTypes();
+                var paymentTypes = await paymentTypeService.GetAllActivePaymentTypes();
                 var model = new DashboardViewModel()
                 {
                     FullBudget = (decimal)budget,

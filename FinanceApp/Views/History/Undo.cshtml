@@ -1,0 +1,57 @@
+﻿@model UndoViewModel
+
+@{
+    ViewData["Title"] = "Undo";
+}
+
+@{
+   
+    if (@Model.DeletedPaymentTypes != null)
+    {
+        <hr style="margin-left" width="30%" />
+       
+            <div class="card" style="width:18rem">
+                <div class="card-header">Deleted Payment Types</div>
+                <ul class="list-group list-group-flush">
+                    @{
+                        var counter = 1;
+                    }
+                    @foreach (var paymentType in Model.DeletedPaymentTypes)
+                    {
+                        <li class="list-group-item">
+                            N.@counter: @paymentType.Name
+                            <button type="button" class="d-inline-flex btn btn-secondary rounded-3" style="padding: 0">
+                                <a class="nav-link text-white" asp-controller="History" asp-action="UndoPaymentType" asp-route-id=@paymentType.Id>Undo</a>
+                            </button>
+                        </li>
+                        counter++;
+                    }
+                </ul>
+            </div>
+    }
+
+    if (@Model.DeletedPayments != null)
+    {
+        <hr style="margin-left" width="30%" />
+
+        <div class="card" style="width:18rem">
+            <div class="card-header">Deleted Payments</div>
+            <ul class="list-group list-group-flush">
+                @{
+                    var counter = 1;
+                }
+                @foreach (var payment in Model.DeletedPayments)
+                {
+                    //var isPaid = payment.IsPaidFor ? "Is Paid" : "Is Not Paid";
+                    <li class="list-group-item">
+                        N.@counter: @payment.Name | @payment.Cost.ToString("F")
+                        <button type="button" class="d-inline-flex btn btn-secondary rounded-3" style="padding: 0">
+                            <a class="nav-link text-white" asp-controller="History" asp-action="UndoPayment" asp-route-id=@payment.Id>Undo</a>
+                        </button>
+                    </li>
+                    counter++;
+                }
+            </ul>
+        </div>
+    }
+}

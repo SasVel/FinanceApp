@@ -11,6 +11,12 @@ namespace FinanceApp.Core.Contracts
     {
         Task<IEnumerable<BudgetsHistory>> GetHistoryPaymentsByMonthAndYearAsync(int month, int year);
 
+        Task<IEnumerable<CurrentPayment>> GetAllDeletedPayments();
 
+        Task<IEnumerable<PaymentType>> GetAllDeletedPaymentTypes();
+
+        Task UndoDeletedPayment(CurrentPayment entity);
+
+        Task UndoDeletedPaymentType(PaymentType entity);
     }
 }

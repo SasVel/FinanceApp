@@ -25,9 +25,16 @@ namespace FinanceApp.Core.Services
             await dbContext.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<PaymentType?>> GetAllPaymentTypes()
+        public async Task<IEnumerable<PaymentType?>> GetAllActivePaymentTypes()
         {
             var entities = await dbContext.PaymentTypes.Include(p => p.Payments).Where(p => p.IsActive == true).ToArrayAsync();
+
+            return entities;
+        }
+
+        public async Task<IEnumerable<PaymentType?>> GetAllInactivePaymentTypes()
+        {
+            var entities = await dbContext.PaymentTypes.Include(p => p.Payments).Where(p => p.IsActive == false).ToArrayAsync();
 
             return entities;
         }
@@ -35,6 +42,13 @@ namespace FinanceApp.Core.Services
         public async Task<PaymentType?> GetPaymentTypeAsync(int id)
         {
             var entitity = await dbContext.PaymentTypes.Where(e => e.Id == id && e.IsActive == true).FirstOrDefaultAsync();
+
+            return entitity;
+        }
+
+        public async Task<PaymentType> GetInactivePaymentTypeAsync(int id)
+        {
+            var entitity = await dbContext.PaymentTypes.Where(e => e.Id == id && e.IsActive == false).FirstOrDefaultAsync();
 
             return entitity;
         }
@@ -52,5 +66,9 @@ namespace FinanceApp.Core.Services
             await dbContext.SaveChangesAsync();
         }
 
+        public async Task SaveChangesToPaymentTypeAsync()
+        {
+            await dbContext.SaveChangesAsync();
+        }
     }
 }

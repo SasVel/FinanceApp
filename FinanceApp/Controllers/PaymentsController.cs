@@ -25,7 +25,7 @@ namespace FinanceApp.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            var entities = await paymentTypeService.GetAllPaymentTypes();
+            var entities = await paymentTypeService.GetAllActivePaymentTypes();
             var models = entities.Select(x => new PaymentTypeViewModel()
             {
                 Id = x.Id,
@@ -38,7 +38,7 @@ namespace FinanceApp.Controllers
         public async Task<IActionResult> SelectPaymentType(int id)
         {
             var entity = await paymentTypeService.GetPaymentTypeAsync(id);
-            var payments = await paymentService.GetAllPaymentsByTypeIdAsync(id);
+            var payments = await paymentService.GetAllActivePaymentsByTypeIdAsync(id);
             var model = new PaymentTypeViewModel()
             {
                 Id = entity.Id,
@@ -103,7 +103,7 @@ namespace FinanceApp.Controllers
             };
 
             await paymentTypeService.AddPaymentTypeAsync(entry);
-            var paymentTypes = await paymentTypeService.GetAllPaymentTypes();
+            var paymentTypes = await paymentTypeService.GetAllActivePaymentTypes();
             var id = paymentTypes.Single(pt => pt.Name == entry.Name).Id;
             return RedirectToAction("SelectPaymentType", new { id });
         }
@@ -115,6 +115,40 @@ namespace FinanceApp.Controllers
 
             return RedirectToAction("Index");
         }
+
+        [HttpGet]
+        public async Task<IActionResult> DeletePayment(int id)
+        {
+            await paymentService.DeletePayment(id);
+
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> EditPaymentType(int id)
+        {
+            var entity = await paymentTypeService.GetPaymentTypeAsync(id);
+            var model = new PaymentTypeViewModel()
+            {
+                Id = entity.Id,
+                Name = entity.Name,
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditPaymentType(PaymentTypeViewModel model)
+        {
+            var entity = await paymentTypeService.GetPaymentTypeAsync(model.Id);
+            entity.Name = model.Name;
+
+
+            await paymentTypeService.SaveChangesToPaymentTypeAsync();
+
+            return RedirectToAction("SelectPaymentType", new { id = model.Id });
+        }
+
 
         public async Task<IActionResult> PayForPayment(int id)
         {

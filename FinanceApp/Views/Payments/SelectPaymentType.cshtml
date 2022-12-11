@@ -5,6 +5,9 @@
 }
 
 <h2 style="margin-bottom:0" class="d-inline-flex m-lg-2">This is @Model.Name</h2>
+<button type="button" class="d-inline-flex m-lg-2 btn btn-primary rounded-3" style="padding: 0">
+    <a class="nav-link text-white" asp-controller="Payments" asp-action="EditPaymentType" asp-route-id=@Model.Id>Edit</a>
+</button>
 <button type="button" class="d-inline-flex m-lg-2 btn btn-danger rounded-3" style="padding: 0">
     <a class="nav-link text-white" asp-controller="Payments" asp-action="DeletePaymentType" asp-route-id=@Model.Id>Delete</a>
 </button>
@@ -17,8 +20,12 @@
         }
         @foreach (var payment in Model.CurrentPayments)
         {
+            var isPaid = payment.IsPaidFor ? "Is Paid" : "Is Not Paid";
             <li class="list-group-item">
-                N.@counter: @payment.Name
+                N.@counter: @payment.Name | @payment.Cost |
+                <button type="button" class="d-inline-flex btn btn-danger rounded-3" style="padding: 0">
+                    <a class="nav-link text-white" asp-controller="Payments" asp-action="DeletePayment" asp-route-id=@payment.Id>Delete</a>
+                </button>
             </li>
             counter++;
         }

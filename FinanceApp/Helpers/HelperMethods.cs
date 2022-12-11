@@ -9,7 +9,7 @@ namespace FinanceApp.Helpers
 
         public static async Task<IEnumerable<PaymentTypeViewModel>> GetAllPaymentTypeViewModels()
         {
-            var entities = await paymentTypeService.GetAllPaymentTypes();
+            var entities = await paymentTypeService.GetAllActivePaymentTypes();
             var models = entities.Select(x => new PaymentTypeViewModel()
             {
                 Id = x.Id,
