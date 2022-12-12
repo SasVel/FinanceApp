@@ -1,6 +1,8 @@
 ﻿using FinanceApp.Core.Contracts;
 using FinanceApp.Infrastructure;
 using FinanceApp.Infrastructure.Models;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -13,10 +15,17 @@ namespace FinanceApp.Core.Services
     public class PaymentTypeService : IPaymentTypeService
     {
         public readonly ApplicationDbContext dbContext;
+        private readonly IHttpContextAccessor httpContextAccessor;
+        private readonly UserManager<User> userManager;
+        private readonly string userId;
 
-        public PaymentTypeService(ApplicationDbContext _dbContext)
+        public PaymentTypeService(ApplicationDbContext _dbContext, IHttpContextAccessor _httpContextAccessor, UserManager<User> _userManager)
         {
             dbContext = _dbContext;
+            httpContextAccessor = _httpContextAccessor;
+            userManager = _userManager;
+
+            this.userId = userManager.GetUserId(httpContextAccessor.HttpContext?.User);
         }
 
         public async Task AddPaymentTypeAsync(PaymentType entry)
@@ -27,43 +36,52 @@ namespace FinanceApp.Core.Services
 
         public async Task<IEnumerable<PaymentType?>> GetAllActivePaymentTypes()
         {
-            var entities = await dbContext.PaymentTypes.Include(p => p.Payments).Where(p => p.IsActive == true).ToArrayAsync();
+            var entities = await dbContext.PaymentTypes
+                .Include(p => p.Payments)
+                .Where(p => p.IsActive == true && p.UserId == userId).ToArrayAsync();
 
             return entities;
         }
 
         public async Task<IEnumerable<PaymentType?>> GetAllInactivePaymentTypes()
         {
-            var entities = await dbContext.PaymentTypes.Include(p => p.Payments).Where(p => p.IsActive == false).ToArrayAsync();
+            var entities = await dbContext.PaymentTypes
+                .Include(p => p.Payments)
+                .Where(p => p.IsActive == false && p.UserId == userId).ToArrayAsync();
 
             return entities;
         }
 
         public async Task<PaymentType?> GetPaymentTypeAsync(int id)
         {
-            var entitity = await dbContext.PaymentTypes.Where(e => e.Id == id && e.IsActive == true).FirstOrDefaultAsync();
+            var entity = await dbContext.PaymentTypes
+                .Where(e => e.Id == id && e.IsActive == true && e.UserId == userId).FirstOrDefaultAsync();
 
-            return entitity;
+            return entity;
         }
 
         public async Task<PaymentType> GetInactivePaymentTypeAsync(int id)
         {
-            var entitity = await dbContext.PaymentTypes.Where(e => e.Id == id && e.IsActive == false).FirstOrDefaultAsync();
+            var entity = await dbContext.PaymentTypes
+                .Where(e => e.Id == id && e.IsActive == false && e.UserId == userId).FirstOrDefaultAsync();
 
-            return entitity;
+            return entity;
         }
 
         public async Task DeletePaymentType(int Id)
         {
-            var entity = await dbContext.PaymentTypes.FirstAsync(x => x.Id == Id);
-            entity.IsActive = false;
-
-            foreach (var payment in entity.Payments)
+            var entity = await dbContext.PaymentTypes
+                .FirstOrDefaultAsync(x => x.Id == Id && x.UserId == userId);
+            if (entity != null)
             {
-                payment.IsActive = false;
-            }
+                entity.IsActive = false;
 
-            await dbContext.SaveChangesAsync();
+                foreach (var payment in entity.Payments)
+                {
+                    payment.IsActive = false;
+                }
+                await dbContext.SaveChangesAsync();
+            }
         }
 
         public async Task SaveChangesToPaymentTypeAsync()

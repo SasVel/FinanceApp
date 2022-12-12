@@ -28,6 +28,7 @@ namespace FinanceApp.Infrastructure.Data.Configuration
                     Cost = 1m,
                     Quantity = 0,
                     IsActive = true,
+                    UserId = "54b87d10-2354-4185-a731-b73ec2d1d9cb"
                 }
             };
             return templates;

@@ -2,7 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using FinanceApp.Models;
 using FinanceApp.Core.Contracts;
-using System.Globalization;
+using Microsoft.AspNetCore.Identity;
+using FinanceApp.Infrastructure.Models;
 
 namespace FinanceApp.Controllers
 {
@@ -26,8 +27,8 @@ namespace FinanceApp.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-                var model = new HistoryViewModel();
-                return View(model);
+            var model = new HistoryViewModel();
+            return View(model);
         }
 
         [HttpPost]

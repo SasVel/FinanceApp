@@ -25,12 +25,14 @@ namespace FinanceApp.Infrastructure.Data.Configuration
                     Id = 1,
                     Name = "Food Payments",
                     IsActive = true,
+                    UserId = "54b87d10-2354-4185-a731-b73ec2d1d9cb"
                 },
                 new PaymentType()
                 {
                     Id = 2,
                     Name = "Car Payments",
                     IsActive = true,
+                    UserId = "54b87d10-2354-4185-a731-b73ec2d1d9cb"
                 }
             };
             return paymentTypes;

@@ -33,30 +33,27 @@ namespace FinanceApp.Core.Contracts
         /// <returns></returns>
         Task<IEnumerable<CurrentPayment>> GetCurrentPaymentsIsPaidFor(bool isPaid);
 
-        Task<decimal?> GetUsersFullMonthlyBudget(string id);
+        Task<decimal?> GetUsersFullMonthlyBudget();
 
         /// <summary>
         /// Returns the current budget of the user by id.
         /// </summary>
-        /// <param name="id"></param>
         /// <returns></returns>
-        Task<decimal?> GetUsersCurrentBudget(string id);
+        Task<decimal?> GetUsersCurrentBudget();
 
         /// <summary>
         /// Returns the estimated budget of the user by id. 
         /// Money that are going to be left at the end of the month.
         /// </summary>
-        /// <param name="id"></param>
         /// <returns></returns>
-        Task<decimal?> GetUsersEstimatedBudget(string id);
+        Task<decimal?> GetUsersEstimatedBudget();
 
         /// <summary>
         /// Sets the users monthly budget.
         /// </summary>
-        /// <param name="id"></param>
         /// <param name="newBudget"></param>
         /// <returns></returns>
-        Task SetUsersMonthlyBudget(string id, decimal newBudget);
+        Task SetUsersMonthlyBudget(decimal newBudget);
 
         /// <summary>
         /// Adds a current payment.

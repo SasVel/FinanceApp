@@ -29,15 +29,15 @@ namespace FinanceApp.Controllers
         public async Task<IActionResult> Index()
         {
             var currentUser = await userManager.GetUserAsync(User);
-            budget = await paymentService.GetUsersFullMonthlyBudget(currentUser.Id);
+            budget = await paymentService.GetUsersFullMonthlyBudget();
             if (budget == null || budget == 0)
             {
                 return RedirectToAction("MonthlyBudgetForm");
             }
             else
             {
-                var currentBudget = await paymentService.GetUsersCurrentBudget(currentUser.Id);
-                var estimatedBudget = await paymentService.GetUsersEstimatedBudget(currentUser.Id);
+                var currentBudget = await paymentService.GetUsersCurrentBudget();
+                var estimatedBudget = await paymentService.GetUsersEstimatedBudget();
 
                 var paymentTypes = await paymentTypeService.GetAllActivePaymentTypes();
                 var model = new DashboardViewModel()
@@ -77,8 +77,7 @@ namespace FinanceApp.Controllers
         [HttpPost]
         public async Task<IActionResult> MonthlyBudgetForm(DashboardViewModel model)
         {
-            var currentUser = await userManager.GetUserAsync(User);
-            await paymentService.SetUsersMonthlyBudget(currentUser.Id, model.FullBudget);
+            await paymentService.SetUsersMonthlyBudget(model.FullBudget);
 
             return RedirectToAction("Index");
         }

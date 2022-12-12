@@ -38,24 +38,36 @@ namespace FinanceApp.Controllers
         public async Task<IActionResult> SelectPaymentType(int id)
         {
             var entity = await paymentTypeService.GetPaymentTypeAsync(id);
-            var payments = await paymentService.GetAllActivePaymentsByTypeIdAsync(id);
-            var model = new PaymentTypeViewModel()
+            if (entity != null)
             {
-                Id = entity.Id,
-                Name= entity.Name,
-                CurrentPayments = payments
-                    .Select(p => new PaymentViewModel() 
-                    { 
-                        Id = p.Id,
-                        Name = p.Name,
-                        Description = p.Description,
-                        Cost = p.Cost,
-                        IsSignular = p.IsSignular,
-                        IsPaidFor = p.IsPaidFor,
-                    })
-            };
+                var payments = await paymentService.GetAllActivePaymentsByTypeIdAsync(id);
+                var model = new PaymentTypeViewModel()
+                {
+                    Id = entity.Id,
+                    Name = entity.Name,
+                    CurrentPayments = payments
+                        .Select(p => new PaymentViewModel()
+                        {
+                            Id = p.Id,
+                            Name = p.Name,
+                            Description = p.Description,
+                            Cost = p.Cost,
+                            IsSignular = p.IsSignular,
+                            IsPaidFor = p.IsPaidFor,
+                        })
+                };
 
-            return View(model);
+                return View(model);
+            }
+            else
+            {
+                return RedirectToAction("Error", "Home", 
+                    new ErrorViewModel() 
+                    { 
+                        Message = "Payment type not found." 
+                    } );
+            }
+            
         }
         [HttpGet]
         public IActionResult AddCurrentPayment(int id)
@@ -68,7 +80,7 @@ namespace FinanceApp.Controllers
         [HttpPost]
         public async Task<IActionResult> AddCurrentPayment(PaymentViewModel model)
         {
-            var currentUser = await userManager.GetUserAsync(User);
+            var currentUser = await userManager.GetUserAsync(this.User);
             var entry = new CurrentPayment()
             {
                 Name = model.Name,
@@ -96,10 +108,12 @@ namespace FinanceApp.Controllers
         [HttpPost]
         public async Task<IActionResult> AddPaymentType(PaymentTypeViewModel model)
         {
+            var currentUser = await userManager.GetUserAsync(this.User);
             var entry = new PaymentType()
             {
                 Name = model.Name,
-                IsActive = true
+                IsActive = true,
+                UserId = currentUser.Id
             };
 
             await paymentTypeService.AddPaymentTypeAsync(entry);

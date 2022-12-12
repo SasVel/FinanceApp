@@ -2,6 +2,7 @@ using FinanceApp.Core.Contracts;
 using FinanceApp.Core.Services;
 using FinanceApp.Infrastructure;
 using FinanceApp.Infrastructure.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
@@ -84,9 +85,10 @@ namespace FinanceApp.UnitTests
             this.dbContext.AddRange(this.payments);
             this.dbContext.SaveChanges();
 
-            IPaymentService service =
-                new PaymentService(this.dbContext);
-            this.paymentService = service;
+            IHttpContextAccessor httpContextAccessor = new HttpContextAccessor();
+            //IPaymentService service =
+            //    new PaymentService(this.dbContext, httpContextAccessor, userManager);
+            //this.paymentService = service;
 
         }
         [Test]
@@ -161,7 +163,7 @@ namespace FinanceApp.UnitTests
         [Test]
         public async Task GetUsersFullMonthlyBudget_Test()
         {
-            var userBudget = await paymentService.GetUsersFullMonthlyBudget(user.Id);
+            var userBudget = await paymentService.GetUsersFullMonthlyBudget();
 
             Assert.That(userBudget, Is.EqualTo(user.MonthlyBudget));
         }

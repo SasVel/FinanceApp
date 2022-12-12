@@ -7,6 +7,7 @@ namespace FinanceApp.Helpers
     {
         private static readonly IPaymentTypeService paymentTypeService;
 
+
         public static async Task<IEnumerable<PaymentTypeViewModel>> GetAllPaymentTypeViewModels()
         {
             var entities = await paymentTypeService.GetAllActivePaymentTypes();

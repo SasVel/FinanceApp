@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 
 namespace FinanceApp.Core.Services
 {
@@ -16,10 +18,17 @@ namespace FinanceApp.Core.Services
     public class PaymentService : IPaymentService
     {
         public readonly ApplicationDbContext dbContext;
+        private readonly IHttpContextAccessor httpContextAccessor;
+        private readonly UserManager<User> userManager;
+        private readonly string userId;
 
-        public PaymentService(ApplicationDbContext _dbContext)
+        public PaymentService(ApplicationDbContext _dbContext, IHttpContextAccessor _httpContextAccessor, UserManager<User> _userManager)
         {
             dbContext = _dbContext;
+            httpContextAccessor = _httpContextAccessor;
+            userManager = _userManager;
+
+            this.userId = userManager.GetUserId(httpContextAccessor.HttpContext?.User);
         }
 
         public async Task AddCurrentPaymentAsync(CurrentPayment entry)
@@ -53,11 +62,13 @@ namespace FinanceApp.Core.Services
         {
             if (isPaid)
             {
-                return await dbContext.CurrentPayments.Where(p => p.IsPaidFor == true).ToArrayAsync();
+                return await dbContext.CurrentPayments
+                    .Where(p => p.IsPaidFor == true).ToArrayAsync();
             }
             else
             {
-                return await dbContext.CurrentPayments.Where(p => p.IsPaidFor == false).ToArrayAsync();
+                return await dbContext.CurrentPayments
+                    .Where(p => p.IsPaidFor == false).ToArrayAsync();
             }
         }
         
@@ -65,36 +76,40 @@ namespace FinanceApp.Core.Services
         {
             if (isSingular)
             {
-                return await dbContext.CurrentPayments.Where(p => p.IsSignular == true).ToArrayAsync();
+                return await dbContext.CurrentPayments
+                    .Where(p => p.IsSignular == true).ToArrayAsync();
             }
             else
             {
-                return await dbContext.CurrentPayments.Where(p => p.IsSignular == false).ToArrayAsync();
+                return await dbContext.CurrentPayments
+                    .Where(p => p.IsSignular == false).ToArrayAsync();
             }
         }
         
-        public async Task<decimal?> GetUsersCurrentBudget(string id)
+        public async Task<decimal?> GetUsersCurrentBudget()
         {
-            var fullBudget = await GetUsersFullMonthlyBudget(id);
-            var donePaymentsSum = await dbContext.CurrentPayments.Where(p => p.IsPaidFor == true).Select(p => p.Cost).SumAsync();
+            var fullBudget = await GetUsersFullMonthlyBudget();
+            var donePaymentsSum = await dbContext.CurrentPayments
+                .Where(p => p.IsPaidFor == true && p.UserId == userId)
+                .Select(p => p.Cost).SumAsync();
 
             return fullBudget - donePaymentsSum;
         }
 
-        public async Task<decimal?> GetUsersEstimatedBudget(string id)
+        public async Task<decimal?> GetUsersEstimatedBudget()
         {
-            var fullBudget = await GetUsersFullMonthlyBudget(id);
+            var fullBudget = await GetUsersFullMonthlyBudget();
             var allPaymentsSum = await dbContext.CurrentPayments
-                .Where(p => p.IsActive == true)
+                .Where(p => p.IsActive == true && p.UserId == userId)
                 .Select(p => p.Cost)
                 .SumAsync();
 
             return fullBudget - allPaymentsSum;
         }
 
-        public async Task<decimal?> GetUsersFullMonthlyBudget(string id)
+        public async Task<decimal?> GetUsersFullMonthlyBudget()
         {
-            var user = await dbContext.Users.Where(u => u.Id == id).FirstOrDefaultAsync();
+            var user = await dbContext.Users.FirstOrDefaultAsync(u => u.Id == userId);
             var budget = user?.MonthlyBudget;
             return budget;
         }
@@ -116,9 +131,10 @@ namespace FinanceApp.Core.Services
             await dbContext.SaveChangesAsync();
         }
 
-        public async Task SetUsersMonthlyBudget(string id, decimal newBudget)
+        public async Task SetUsersMonthlyBudget(decimal newBudget)
         {
-            var user = await dbContext.Users.Where(u => u.Id == id).FirstAsync();
+            var user = await dbContext.Users
+                .FirstAsync(u => u.Id == userId);
             user.MonthlyBudget = newBudget;
 
             await dbContext.SaveChangesAsync();
@@ -127,7 +143,8 @@ namespace FinanceApp.Core.Services
 
         public async Task DeletePayment(int id)
         {
-            var entry = dbContext.CurrentPayments.FirstOrDefault(p => p.Id == id);
+            var entry = await dbContext.CurrentPayments
+                .FirstAsync(p => p.Id == id);
             entry.IsActive = false;
 
             await dbContext.SaveChangesAsync();
