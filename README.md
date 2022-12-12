@@ -4,6 +4,7 @@
 <p>FinanceApp is an application for easy and convenient management of a person's finances. It's flexible structure and easy to use minimalist design allows the user to quickly check off their expenses and continue with their day. It has a built in undo system for deleting payments for lossless workflow.</p>
 
 <h3>Built With</h3>
+<hr/>
 <ul>
 <li>ASP.NET CORE </li>
 <li>ASP.NET CORE view components</li>
