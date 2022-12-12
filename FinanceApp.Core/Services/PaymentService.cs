@@ -28,8 +28,6 @@ namespace FinanceApp.Core.Services
             await dbContext.SaveChangesAsync();
         }
 
-
-
         public async Task<IEnumerable<CurrentPayment>> GetAllCurrentPayments()
         {
             var entities = await dbContext.CurrentPayments.ToArrayAsync();
@@ -43,19 +41,14 @@ namespace FinanceApp.Core.Services
 
             return entity;
         }
-
+        
         public async Task<IEnumerable<CurrentPayment>> GetAllActivePaymentsByTypeIdAsync(int PaymentTypeId)
         {
             var entities = await dbContext.CurrentPayments.Where(p => p.PaymentTypeId == PaymentTypeId && p.IsActive == true).ToArrayAsync();
 
             return entities;
         }
-
-        /// <summary>
-        /// Gets the payments that are paid or not. True for paid, false for not paid for.
-        /// </summary>
-        /// <param name="isSingular"></param>
-        /// <returns></returns>
+        
         public async Task<IEnumerable<CurrentPayment>> GetCurrentPaymentsIsPaidFor(bool isPaid)
         {
             if (isPaid)
@@ -67,11 +60,7 @@ namespace FinanceApp.Core.Services
                 return await dbContext.CurrentPayments.Where(p => p.IsPaidFor == false).ToArrayAsync();
             }
         }
-
-        /// <summary>
-        /// Gets the singular or recurring current payments. True for singular, false for recurring
-        /// </summary>
-        /// <returns></returns>
+        
         public async Task<IEnumerable<CurrentPayment>> GetCurrentPaymentsSingular(bool isSingular)
         {
             if (isSingular)
@@ -83,7 +72,7 @@ namespace FinanceApp.Core.Services
                 return await dbContext.CurrentPayments.Where(p => p.IsSignular == false).ToArrayAsync();
             }
         }
-
+        
         public async Task<decimal?> GetUsersCurrentBudget(string id)
         {
             var fullBudget = await GetUsersFullMonthlyBudget(id);
@@ -118,6 +107,7 @@ namespace FinanceApp.Core.Services
             await dbContext.SaveChangesAsync();
         }
 
+        
         public async Task UndoPayment(int id)
         {
             var payment = await dbContext.CurrentPayments.FirstAsync(p => p.Id == id);

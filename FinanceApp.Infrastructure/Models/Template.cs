@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using static FinanceApp.Infrastructure.DataConstants.CurrentBudget;
+using static FinanceApp.Infrastructure.DataConstants.Payment;
 namespace FinanceApp.Infrastructure.Models
 {
     /// <summary>

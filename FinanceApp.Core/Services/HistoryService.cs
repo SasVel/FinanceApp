@@ -10,9 +10,7 @@ using System.Threading.Tasks;
 
 namespace FinanceApp.Core.Services
 {
-    /// <summary>
-    /// A service for past payments
-    /// </summary>
+    
     public class HistoryService : IHistoryService
     {
         public readonly ApplicationDbContext dbContext;

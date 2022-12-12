@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace FinanceApp.Core.Contracts
 {
+    /// <summary>
+    /// A service for past payments
+    /// </summary>
     public interface IHistoryService
     {
         Task<IEnumerable<BudgetsHistory>> GetHistoryPaymentsByMonthAndYearAsync(int month, int year);

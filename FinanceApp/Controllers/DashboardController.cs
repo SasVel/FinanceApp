@@ -49,7 +49,7 @@ namespace FinanceApp.Controllers
                     {
                         Id = pt.Id,
                         Name = pt.Name,
-                        CurrentPayments = pt.Payments.Select(p => new CurrentPaymentViewModel
+                        CurrentPayments = pt.Payments.Select(p => new PaymentViewModel
                         {
                             Id = p.Id,
                             Name = p.Name,

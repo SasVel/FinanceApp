@@ -34,7 +34,7 @@ namespace FinanceApp.Controllers
         public async Task<IActionResult> Index(HistoryViewModel model)
         {
             var paymentEntities = await historyService.GetHistoryPaymentsByMonthAndYearAsync(model.SearchMonth, model.SearchYear);
-            var paymentModels = paymentEntities.Select(e => new CurrentPaymentViewModel
+            var paymentModels = paymentEntities.Select(e => new PaymentViewModel
             {
                 Id = e.Id,
                 Name = e.Name,
@@ -69,7 +69,7 @@ namespace FinanceApp.Controllers
         public async Task<IActionResult> Undo()
         {
             var paymentEntities = await historyService.GetAllDeletedPayments();
-            var paymentModels = paymentEntities.Select(e => new CurrentPaymentViewModel
+            var paymentModels = paymentEntities.Select(e => new PaymentViewModel
             {
                 Id = e.Id,
                 Name = e.Name,

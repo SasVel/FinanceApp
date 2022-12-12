@@ -13,6 +13,6 @@ namespace FinanceApp.Models
         [StringLength(NameMaxLen, MinimumLength = NameMinLen)]
         public string Name { get; set; }
 
-        public IEnumerable<CurrentPaymentViewModel>? CurrentPayments { get; set; }
+        public IEnumerable<PaymentViewModel>? CurrentPayments { get; set; }
     }
 }

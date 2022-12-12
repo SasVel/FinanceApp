@@ -2,7 +2,7 @@
 {
     public static class DataConstants
     {
-        public static class CurrentBudget
+        public static class Payment
         {
             public const int NameMaxLen = 50;
             public const int NameMinLen = 3;

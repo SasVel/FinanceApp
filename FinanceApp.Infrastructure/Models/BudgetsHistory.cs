@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using static FinanceApp.Infrastructure.DataConstants.CurrentBudget;
+using static FinanceApp.Infrastructure.DataConstants.Payment;
 
 namespace FinanceApp.Infrastructure.Models
 {

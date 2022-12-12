@@ -44,7 +44,7 @@ namespace FinanceApp.Controllers
                 Id = entity.Id,
                 Name= entity.Name,
                 CurrentPayments = payments
-                    .Select(p => new CurrentPaymentViewModel() 
+                    .Select(p => new PaymentViewModel() 
                     { 
                         Id = p.Id,
                         Name = p.Name,
@@ -60,13 +60,13 @@ namespace FinanceApp.Controllers
         [HttpGet]
         public IActionResult AddCurrentPayment(int id)
         {
-            var model = new CurrentPaymentViewModel();
+            var model = new PaymentViewModel();
             model.PaymentTypeId = id;
 
             return View(model);
         }
         [HttpPost]
-        public async Task<IActionResult> AddCurrentPayment(CurrentPaymentViewModel model)
+        public async Task<IActionResult> AddCurrentPayment(PaymentViewModel model)
         {
             var currentUser = await userManager.GetUserAsync(User);
             var entry = new CurrentPayment()

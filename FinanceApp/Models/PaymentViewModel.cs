@@ -5,7 +5,7 @@ namespace FinanceApp.Models
     /// <summary>
     /// A view model for a payment for the current month
     /// </summary>
-    public class CurrentPaymentViewModel
+    public class PaymentViewModel
     {
         public int Id { get; set; }
 
