@@ -20,6 +20,10 @@ builder.Services.AddDefaultIdentity<User>(options =>
     options.Password.RequireNonAlphanumeric = builder.Configuration.GetValue<bool>("Identity:RequireNonAlphanumeric");
     options.Password.RequireDigit = builder.Configuration.GetValue<bool>("Identity:RequireDigit");
     options.Password.RequiredLength = builder.Configuration.GetValue<int>("Identity:RequiredLength");
+
+    options.Lockout.AllowedForNewUsers = true;
+    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+    options.Lockout.MaxFailedAccessAttempts = 5;
 })
     .AddEntityFrameworkStores<ApplicationDbContext>();
 

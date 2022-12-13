@@ -5,6 +5,7 @@ using FinanceApp.Infrastructure.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Moq;
 using NUnit.Framework;
 using System.Collections.Generic;
 
@@ -85,10 +86,11 @@ namespace FinanceApp.UnitTests
             this.dbContext.AddRange(this.payments);
             this.dbContext.SaveChanges();
 
-            IHttpContextAccessor httpContextAccessor = new HttpContextAccessor();
-            //IPaymentService service =
-            //    new PaymentService(this.dbContext, httpContextAccessor, userManager);
-            //this.paymentService = service;
+            var userManager = MockHelpers.CreateUserManager<User>();
+            var httpContextAccessor = new Mock<HttpContextAccessor>();
+            IPaymentService service =
+                new PaymentService(this.dbContext, httpContextAccessor.Object, userManager);
+            this.paymentService = service;
 
         }
         [Test]

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using FinanceApp.Infrastructure.Models;
 using FinanceApp.Models;
+using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 
 namespace FinanceApp.Controllers
 {
@@ -97,16 +98,23 @@ namespace FinanceApp.Controllers
             }
 
             var user = await userManager.FindByNameAsync(model.UserName);
-
             if (user != null)
             {
-                var result = await signInManager.PasswordSignInAsync(user, model.Password, false, false);
+                var result = await signInManager.PasswordSignInAsync(user, model.Password, false, true);
 
                 if (result.Succeeded)
                 {
                     return RedirectToAction("Index", "Home");
                 }
+                if (result.IsLockedOut)
+                {
+                    ModelState.AddModelError("", "The account is locked out");
+                    return View();
+                }
             }
+
+            
+
 
             ModelState.AddModelError("", "Invalid login");
 

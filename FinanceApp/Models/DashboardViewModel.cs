@@ -8,6 +8,8 @@
 
         public decimal EstimatedBudget { get; set; }
 
+        public string Currency { get; set; }
+
         public IEnumerable<PaymentTypeViewModel> PaymentsInfo { get; set; }
     }
 }
