@@ -149,5 +149,23 @@ namespace FinanceApp.Core.Services
 
             await dbContext.SaveChangesAsync();
         }
+
+        public async Task SetUsersCurrency(string Ccy)
+        {
+            var user = await dbContext.Users
+               .FirstAsync(u => u.Id == userId);
+            user.Currency = Ccy;
+
+            await dbContext.SaveChangesAsync();
+        }
+
+        public async Task<string> GetUsersCurrency()
+        {
+            var user = await dbContext.Users
+               .FirstAsync(u => u.Id == userId);
+            var ccy = user.Currency;
+
+            return ccy;
+        }
     }
 }

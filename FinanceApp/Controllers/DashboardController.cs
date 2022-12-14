@@ -1,4 +1,6 @@
-﻿using FinanceApp.Core.Contracts;
+﻿using FinanceApp.Core.Common;
+using FinanceApp.Core.Contracts;
+using FinanceApp.Core.Helpers;
 using FinanceApp.Infrastructure.Models;
 using FinanceApp.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -18,6 +20,7 @@ namespace FinanceApp.Controllers
         private readonly UserManager<User> userManager;
 
         private decimal? budget;
+        private string currency;
 
         public DashboardController(IPaymentService _paymentService, IPaymentTypeService _paymentTypeService, UserManager<User> _userManager)
         {
@@ -30,7 +33,8 @@ namespace FinanceApp.Controllers
         {
             var currentUser = await userManager.GetUserAsync(User);
             budget = await paymentService.GetUsersFullMonthlyBudget();
-            if (budget == null || budget == 0)
+            currency = await paymentService.GetUsersCurrency();
+            if (budget == null || budget == 0 || currency == null)
             {
                 return RedirectToAction("MonthlyBudgetForm");
             }
@@ -40,6 +44,7 @@ namespace FinanceApp.Controllers
                 var estimatedBudget = await paymentService.GetUsersEstimatedBudget();
 
                 var paymentTypes = await paymentTypeService.GetAllActivePaymentTypes();
+                var enumNames = Enum.GetNames(typeof(Currencies));
                 var model = new DashboardViewModel()
                 {
                     FullBudget = (decimal)budget,
@@ -60,7 +65,8 @@ namespace FinanceApp.Controllers
                             PaymentTypeId = p.PaymentTypeId
                         })
 
-                    })
+                    }),
+                    Currency = EnumHelper.GetEnumDescription((Currencies)Array.IndexOf(enumNames, currency))
                 };
                 return View(model);
             }
@@ -77,7 +83,13 @@ namespace FinanceApp.Controllers
         [HttpPost]
         public async Task<IActionResult> MonthlyBudgetForm(DashboardViewModel model)
         {
+            if (model.FullBudget == 0m || model.Currency == null)
+            {
+                ModelState.AddModelError("","Invalid budget or currency");
+                return View(model);
+            }
             await paymentService.SetUsersMonthlyBudget(model.FullBudget);
+            await paymentService.SetUsersCurrency(model.Currency);
 
             return RedirectToAction("Index");
         }

@@ -3,29 +3,24 @@ using FinanceApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel;
 using System;
+using FinanceApp.Core.Helpers;
 
 namespace FinanceApp.Controllers.ViewComponents
 {
     public class CurrencyChoicesLoadViewComponent : ViewComponent
     {
-        public IViewComponentResult InvokeAsync()
+        public async Task<IViewComponentResult> InvokeAsync()
         {
             var model = new CurrencyViewModel();
-            var enumCount = Enum.GetValues(typeof(Currencies)).Length;
+            var enumNames = Enum.GetNames(typeof(Currencies));
+            var enumCount = enumNames.Length;
             for (int i = 0; i < enumCount; i++)
             {
-                model.CurrencyNames.Add(Enum.GetName(typeof(Currencies), i));
-                model.CurrencyCodes.Add(Enum.Get, i));
+                model.CurrencyNames.Add(enumNames[i]);
+                model.CurrencyCodes.Add(EnumHelper.GetEnumDescription((Currencies)i));
             }
-        }
 
-        private string ToDescriptionString(this Currencies val)
-        {
-            DescriptionAttribute[] attributes = (DescriptionAttribute[])val
-               .GetType()
-               .GetField(val.ToString())
-               .GetCustomAttributes(typeof(DescriptionAttribute), false);
-            return attributes.Length > 0 ? attributes[0].Description : string.Empty;
+            return View(model);
         }
 
     }

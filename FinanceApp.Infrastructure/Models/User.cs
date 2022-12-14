@@ -14,5 +14,7 @@ namespace FinanceApp.Infrastructure.Models
         [Column(TypeName = "money")]
         [Precision(18,2)]
         public decimal MonthlyBudget { get; set; }
+
+        public string Currency { get; set; }
     }
 }

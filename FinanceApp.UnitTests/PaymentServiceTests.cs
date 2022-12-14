@@ -6,8 +6,11 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Moq;
+using NSubstitute;
 using NUnit.Framework;
 using System.Collections.Generic;
+using System.Security.Claims;
+using System.Security.Principal;
 
 namespace FinanceApp.UnitTests
 {
@@ -20,20 +23,30 @@ namespace FinanceApp.UnitTests
         [SetUp]
         public void Setup()
         {
+            //DbContext setup
+            var options = new DbContextOptionsBuilder<ApplicationDbContext>()
+                    .UseInMemoryDatabase(databaseName: "FinanceDb") // Give a Unique name to the DB
+                    .Options;
+            this.dbContext = new ApplicationDbContext(options);
+
+            //"54b87d10-2354-4185-a731-b73ec2d1d9cb"
             //User info setup
             var hasher = new PasswordHasher<User>();
             this.user = new User()
             {
-                Id = "54b87d10-2354-4185-a731-b73ec2d1d9cb",
+                Id = Guid.NewGuid().ToString(),
                 UserName = "guest_user",
                 NormalizedUserName = "guest_user".Normalize(),
                 Email = "guest@mail.com",
                 NormalizedEmail = "guest@mail.com".Normalize(),
-                MonthlyBudget = 3000
+                MonthlyBudget = 3000,
+                Currency = "BGN"
             };
             user.PasswordHash =
                  hasher.HashPassword(user, "guest123");
 
+            this.dbContext.Add(user);
+            this.dbContext.SaveChanges();
 
             //Payments info setup
             this.payments = new List<CurrentPayment>()
@@ -47,7 +60,7 @@ namespace FinanceApp.UnitTests
                     IsSignular = true,
                     IsPaidFor = false,
                     IsActive = true,
-                    UserId = "54b87d10-2354-4185-a731-b73ec2d1d9cb",
+                    UserId = dbContext.Users.First().Id,
                     PaymentTypeId = 1
                 },
                 new CurrentPayment()
@@ -59,7 +72,7 @@ namespace FinanceApp.UnitTests
                     IsSignular = true,
                     IsPaidFor = true,
                     IsActive = false,
-                    UserId = "54b87d10-2354-4185-a731-b73ec2d1d9cb",
+                    UserId = dbContext.Users.First().Id,
                     PaymentTypeId = 1
                 },
                 new CurrentPayment()
@@ -71,28 +84,37 @@ namespace FinanceApp.UnitTests
                     IsSignular = false,
                     IsPaidFor = true,
                     IsActive = true,
-                    UserId = "54b87d10-2354-4185-a731-b73ec2d1d9cb",
+                    UserId = dbContext.Users.First().Id,
                     PaymentTypeId = 1
                 }
             };
-
-            //DbContext setup
-            var options = new DbContextOptionsBuilder<ApplicationDbContext>()
-                    .UseInMemoryDatabase(databaseName: "FinanceDb") // Give a Unique name to the DB
-                    .Options;
-
-            this.dbContext = new ApplicationDbContext(options);
-            this.dbContext.Add(user);
             this.dbContext.AddRange(this.payments);
             this.dbContext.SaveChanges();
 
             var userManager = MockHelpers.CreateUserManager<User>();
-            var httpContextAccessor = new Mock<HttpContextAccessor>();
+            //var userManager = Substitute.For<UserManager<User>>();
+
+            var mockIdentity = new GenericIdentity("TestName");
+            var contextUser = new ClaimsPrincipal(mockIdentity);
+            var mockHttpAccessor = Substitute.For<IHttpContextAccessor>();
+            //mockHttpAccessor.HttpContext.User = 
+            var context = new DefaultHttpContext
+            {
+                User = contextUser,
+                Connection =
+                {
+                    Id = Guid.NewGuid().ToString()
+                }
+            };
+            
+
+            mockHttpAccessor.HttpContext.Returns(context);
             IPaymentService service =
-                new PaymentService(this.dbContext, httpContextAccessor.Object, userManager);
+                new PaymentService(this.dbContext, mockHttpAccessor, userManager);
             this.paymentService = service;
 
         }
+
         [Test]
         public async Task GetPaymentAsync_Test()
         {
@@ -167,7 +189,7 @@ namespace FinanceApp.UnitTests
         {
             var userBudget = await paymentService.GetUsersFullMonthlyBudget();
 
-            Assert.That(userBudget, Is.EqualTo(user.MonthlyBudget));
+            Assert.That((decimal)userBudget, Is.EqualTo(user.MonthlyBudget));
         }
         
 
@@ -175,6 +197,9 @@ namespace FinanceApp.UnitTests
         public void TearDown()
         {
             this.dbContext.Dispose();
-        }
+            this.payments.Clear();
+            this.user = null;
+            this.paymentService = null;
+    }
     }
 }

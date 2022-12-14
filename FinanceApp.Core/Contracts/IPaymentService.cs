@@ -49,11 +49,25 @@ namespace FinanceApp.Core.Contracts
         Task<decimal?> GetUsersEstimatedBudget();
 
         /// <summary>
-        /// Sets the users monthly budget.
+        /// Sets the user's monthly budget.
         /// </summary>
         /// <param name="newBudget"></param>
         /// <returns></returns>
         Task SetUsersMonthlyBudget(decimal newBudget);
+
+        /// <summary>
+        /// Sets the user's currency.
+        /// </summary>
+        /// <param name="Ccy"></param>
+        /// <returns></returns>
+        Task SetUsersCurrency(string Ccy);
+
+        /// <summary>
+        /// Gets the user's currency.
+        /// </summary>
+        /// <param name="Ccy"></param>
+        /// <returns></returns>
+        Task<string> GetUsersCurrency();
 
         /// <summary>
         /// Adds a current payment.

@@ -9,13 +9,13 @@
     <hr />
     <div class="list-inline">
         <h3 class="list-inline-item">| Full Budget:</h3>
-        <h3 class="list-inline-item">@Model.FullBudget.ToString("F") | </h3>
+        <h3 class="list-inline-item">@Model.FullBudget.ToString("F")@Html.Raw(Model.Currency) | </h3>
 
         <h3 class="list-inline-item">Current Budget:</h3>
-        <h3 class="list-inline-item">@Model.CurrentBudget.ToString("F") | </h3>
+        <h3 class="list-inline-item">@Model.CurrentBudget.ToString("F")@Html.Raw(Model.Currency) | </h3>
 
         <h3 class="list-inline-item">Estimated Budget:</h3>
-        <h3 class="list-inline-item">@Model.EstimatedBudget.ToString("F") | </h3>
+        <h3 class="list-inline-item">@Model.EstimatedBudget.ToString("F")@Html.Raw(Model.Currency) | </h3>
         @*<div class="vertical list-inline-item"></div>*@
     </div>
     <hr />

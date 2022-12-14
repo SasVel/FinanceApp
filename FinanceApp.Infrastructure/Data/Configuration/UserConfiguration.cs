@@ -30,7 +30,8 @@ namespace FinanceApp.Infrastructure.Data.Configuration
                 UserName = "guest_user",
                 NormalizedUserName = "guest_user".Normalize(),
                 Email = "guest@mail.com",
-                NormalizedEmail = "guest@mail.com".Normalize()
+                NormalizedEmail = "guest@mail.com".Normalize(),
+                Currency = "BGN"
             };
 
             user.PasswordHash =

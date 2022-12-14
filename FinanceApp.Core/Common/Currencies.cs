@@ -9,7 +9,7 @@ namespace FinanceApp.Core.Common
 {
     public enum Currencies
     {
-        [Description("&#128;")]
+        [Description("&#8364;")]
         EUR,
         [Description("&#36;")]
         USD,
@@ -20,4 +20,6 @@ namespace FinanceApp.Core.Common
         [Description("лв.")]
         BGN
     }
+
+    
 }

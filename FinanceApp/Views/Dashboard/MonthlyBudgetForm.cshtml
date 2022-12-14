@@ -17,18 +17,17 @@
                     <span asp-validation-for="FullBudget" class="text-danger"></span>
                 </div>
                 <div class="text-center mb-3">
-                    <label asp-for="@Model.Currency" class="form-label">Is the payment singular or recurring</label>
-                    <select asp-for=@Model.Currency class="form-select" aria-label="Singular or recurring payment select">
+                    <label asp-for="@Model.Currency" class="form-label">Currency</label>
+                    <select asp-for=@Model.Currency class="form-select" aria-label="Currency">
                         <option selected>Select an option</option>
-                        @*@await Component.InvokeAsync("CurrencyChoicesLoad")*@
-                        <option value=true>Singular</option>
-                        <option value=false>Recurring</option>
+                        @await Component.InvokeAsync("CurrencyChoicesLoad")
                     </select>
                 </div>
                 <div class="text-center">
                     <button id="login-submit" type="submit" class="btn btn-primary">Submit</button>
                 </div>
             </form>
+            
         </section>
     </div>
 </div>

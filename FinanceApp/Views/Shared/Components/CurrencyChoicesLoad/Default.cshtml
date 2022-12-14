@@ -1,1 +1,6 @@
-﻿
+﻿@model CurrencyViewModel
+
+@for (var i = 0; i < @Model.CurrencyNames.Count; i++)
+{
+    <option value=@Model.CurrencyNames[i]>@Model.CurrencyNames[i] (@Html.Raw(@Model.CurrencyCodes[i]))</option>
+}
