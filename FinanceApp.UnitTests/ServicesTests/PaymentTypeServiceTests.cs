@@ -9,17 +9,19 @@ using Moq;
 using NSubstitute;
 using NUnit.Framework;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Security.Claims;
 using System.Security.Principal;
 
-namespace FinanceApp.UnitTests
+namespace FinanceApp.UnitTests.ServicesTests
 {
-    public class PaymentServiceTests
+    public class PaymentTypeServiceTests
     {
         private List<CurrentPayment> payments;
+        private List<PaymentType> paymentTypes;
         private User user;
         private ApplicationDbContext dbContext;
-        private IPaymentService paymentService;
+        private IPaymentTypeService paymentTypeService;
         [SetUp]
         public void Setup()
         {
@@ -46,6 +48,26 @@ namespace FinanceApp.UnitTests
                  hasher.HashPassword(user, "guest123");
 
             this.dbContext.Add(user);
+            this.dbContext.SaveChanges();
+
+            //PaymentTypes setup
+            this.paymentTypes = new List<PaymentType>()
+            {
+                new PaymentType()
+                {
+                    Name = "Food Payments",
+                    IsActive = true,
+                    UserId = dbContext.Users.First().Id
+                },
+                new PaymentType()
+                {
+                    Name = "Car Payments",
+                    IsActive = true,
+                    UserId = dbContext.Users.First().Id
+                }
+            };
+
+            this.dbContext.AddRange(paymentTypes);
             this.dbContext.SaveChanges();
 
             //Payments info setup
@@ -94,10 +116,10 @@ namespace FinanceApp.UnitTests
             var userManager = MockHelpers.CreateUserManager<User>();
             //var userManager = Substitute.For<UserManager<User>>();
 
-            var mockIdentity = new GenericIdentity("TestName");
+            //userManager.Options.ClaimsIdentity
+            var mockIdentity = new GenericIdentity("guest_user");
             var contextUser = new ClaimsPrincipal(mockIdentity);
             var mockHttpAccessor = Substitute.For<IHttpContextAccessor>();
-            //mockHttpAccessor.HttpContext.User = 
             var context = new DefaultHttpContext
             {
                 User = contextUser,
@@ -107,99 +129,87 @@ namespace FinanceApp.UnitTests
                 }
             };
             
+            var mockService =
+                new Mock<PaymentTypeService>(this.dbContext, mockHttpAccessor, userManager);
+            mockService.SetupProperty(x => x.userId, user.Id);
 
-            mockHttpAccessor.HttpContext.Returns(context);
-            IPaymentService service =
-                new PaymentService(this.dbContext, mockHttpAccessor, userManager);
-            this.paymentService = service;
+            this.paymentTypeService = mockService.Object;
 
         }
 
         [Test]
-        public async Task GetPaymentAsync_Test()
+        public async Task AddPaymentTypeAsync_Test()
         {
-            var paymentToGet = await dbContext.CurrentPayments.FirstAsync();
-
-            var paymentGot = await paymentService.GetPaymentAsync(1);
-
-            Assert.IsNotNull(paymentGot);
-            Assert.That(paymentGot, Is.EqualTo(paymentToGet));
-        }
-
-
-        [Test]
-        public async Task GetAllCurrentPayments_Test()
-        {
-            var paymentsGet = await paymentService.GetAllCurrentPayments();
-            
-            Assert.That(paymentsGet, Is.EqualTo(dbContext.CurrentPayments));
-        }
-
-        [Test]
-        public async Task GetCurrentPaymentsSingular_Test()
-        {
-            var paymentsToGetTrue = await dbContext.CurrentPayments.Where(p => p.IsSignular == true).ToArrayAsync();
-            var paymentsGotTrue = await paymentService.GetCurrentPaymentsSingular(true);
-
-            var paymentsToGetFalse = await dbContext.CurrentPayments.Where(p => p.IsSignular == false).ToArrayAsync();
-            var paymentsGotFalse = await paymentService.GetCurrentPaymentsSingular(false);
-
-            Assert.That(paymentsToGetTrue, Is.EqualTo(paymentsGotTrue));
-            Assert.That(paymentsToGetFalse, Is.EqualTo(paymentsGotFalse));
-        }
-
-        [Test]
-        public async Task GetCurrentPaymentsIsPaidFor_Test()
-        {
-            var paymentsToGetTrue = await dbContext.CurrentPayments.Where(p => p.IsPaidFor == true).ToArrayAsync();
-            var paymentsGotTrue = await paymentService.GetCurrentPaymentsIsPaidFor(true);
-
-            var paymentsToGetFalse = await dbContext.CurrentPayments.Where(p => p.IsPaidFor == false).ToArrayAsync();
-            var paymentsGotFalse = await paymentService.GetCurrentPaymentsIsPaidFor(false);
-
-            Assert.That(paymentsToGetTrue, Is.EqualTo(paymentsGotTrue));
-            Assert.That(paymentsToGetFalse, Is.EqualTo(paymentsGotFalse));
-        }
-
-        [Test]
-        public async Task AddCurrentPaymentAsync_Test()
-        {
-
-            var paymentToAdd = new CurrentPayment()
+            var paymentTypeToAdd = new PaymentType()
             {
-                Name = "Tacos",
-                Description = "Tacossss",
-                EntryDate = DateTime.Now.AddDays(-3),
-                Cost = 130.00m,
-                IsSignular = true,
-                IsPaidFor = true,
+                Name = "House Payments",
                 IsActive = true,
-                UserId = "54b87d10-2354-4185-a731-b73ec2d1d9cb",
-                PaymentTypeId = 1
+                UserId = user.Id
             };
+            await paymentTypeService.AddPaymentTypeAsync(paymentTypeToAdd);
 
-            this.payments.Add(paymentToAdd);
-            await paymentService.AddCurrentPaymentAsync(paymentToAdd);
-
-            Assert.That(this.payments, Is.EqualTo(this.dbContext.CurrentPayments));
+            Assert.IsNotNull(dbContext.PaymentTypes.Where(pt => pt.Id == 3));
+            Assert.That(dbContext.PaymentTypes.Where(pt => pt.Id == 3).Single().Name == paymentTypeToAdd.Name);
         }
 
         [Test]
-        public async Task GetUsersFullMonthlyBudget_Test()
+        public async Task GetAllActivePaymentTypes_Test()
         {
-            var userBudget = await paymentService.GetUsersFullMonthlyBudget();
+            var entitiesFromService = await paymentTypeService.GetAllActivePaymentTypes();
 
-            Assert.That((decimal)userBudget, Is.EqualTo(user.MonthlyBudget));
+            var entitiesFromDb = await dbContext.PaymentTypes
+                .Include(p => p.Payments)
+                .Where(p => p.IsActive == true && p.UserId == user.Id).ToArrayAsync();
+
+            Assert.That(entitiesFromService, Is.EqualTo(entitiesFromDb));
         }
-        
+
+        [Test]
+        public async Task GetAllInactivePaymentTypes_Test()
+        {
+            var entitiesFromService = await paymentTypeService.GetAllInactivePaymentTypes();
+
+            var entitiesFromDb = await dbContext.PaymentTypes
+                .Include(p => p.Payments)
+                .Where(p => p.IsActive == false && p.UserId == user.Id).ToArrayAsync();
+
+            Assert.That(entitiesFromService, Is.EqualTo(entitiesFromDb));
+        }
+
+        [Test]
+        public async Task GetPaymentTypeAsync_Test()
+        {
+            var entityFromService = await paymentTypeService.GetPaymentTypeAsync(1);
+
+            var entityFromDb = await dbContext.PaymentTypes
+                .Where(e => e.Id == 1 && e.IsActive == true && e.UserId == user.Id).FirstOrDefaultAsync();
+
+            Assert.That(entityFromService, Is.EqualTo(entityFromDb));
+        }
+
+        [Test]
+        public async Task GetInactivePaymentTypeAsync()
+        {
+            var entityFromService = await paymentTypeService.GetInactivePaymentTypeAsync(1);
+
+            var entityFromDb = await dbContext.PaymentTypes
+                .Where(e => e.Id == 1 && e.IsActive == false && e.UserId == user.Id).FirstOrDefaultAsync();
+
+            Assert.That(entityFromService, Is.EqualTo(entityFromDb));
+        }
+
+        [Test]
+        public async Task DeletePaymentType_Test()
+        {
+            await paymentTypeService.DeletePaymentType(1);
+
+            Assert.That(dbContext.PaymentTypes.First().IsActive == false);
+        }
 
         [TearDown]
         public void TearDown()
         {
-            this.dbContext.Dispose();
-            this.payments.Clear();
-            this.user = null;
-            this.paymentService = null;
-    }
+            this.dbContext.Database.EnsureDeleted();
+        }
     }
 }

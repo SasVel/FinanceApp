@@ -17,7 +17,8 @@ namespace FinanceApp.Core.Services
         public readonly ApplicationDbContext dbContext;
         private readonly IHttpContextAccessor httpContextAccessor;
         private readonly UserManager<User> userManager;
-        private readonly string userId;
+
+        public virtual string userId { get; set; }
 
         public PaymentTypeService(ApplicationDbContext _dbContext, IHttpContextAccessor _httpContextAccessor, UserManager<User> _userManager)
         {
@@ -25,7 +26,8 @@ namespace FinanceApp.Core.Services
             httpContextAccessor = _httpContextAccessor;
             userManager = _userManager;
 
-            this.userId = userManager.GetUserId(httpContextAccessor.HttpContext?.User);
+            if (userId == null)
+                this.userId = userManager.GetUserId(httpContextAccessor.HttpContext?.User);
         }
 
         public async Task AddPaymentTypeAsync(PaymentType entry)

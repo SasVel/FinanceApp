@@ -7,6 +7,8 @@ namespace FinanceApp.Core.Contracts
     /// </summary>
     public interface IPaymentService
     {
+        public string userId { get; set; }
+
         /// <summary>
         /// Returns all the current payments.
         /// </summary>
@@ -98,5 +100,7 @@ namespace FinanceApp.Core.Contracts
         /// <param name="id"></param>
         /// <returns></returns>
         Task DeletePayment(int id);
+
+
     }
 }

@@ -7,6 +7,8 @@ namespace FinanceApp.Core.Contracts
     /// </summary>
     public interface IPaymentTypeService
     {
+        public string userId { get; set; }
+
         Task AddPaymentTypeAsync(PaymentType entry);
 
         Task<PaymentType?> GetPaymentTypeAsync(int id);

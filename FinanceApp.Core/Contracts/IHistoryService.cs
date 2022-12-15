@@ -12,6 +12,8 @@ namespace FinanceApp.Core.Contracts
     /// </summary>
     public interface IHistoryService
     {
+        public string userId { get; set; }
+
         Task<IEnumerable<BudgetsHistory>> GetHistoryPaymentsByMonthAndYearAsync(int month, int year);
 
         Task<IEnumerable<CurrentPayment>> GetAllDeletedPayments();
