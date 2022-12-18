@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using FinanceApp.Infrastructure.Models;
 using FinanceApp.Models;
 using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
+using Ganss.XSS;
 
 namespace FinanceApp.Controllers
 {
@@ -15,8 +16,8 @@ namespace FinanceApp.Controllers
     {
         
         private readonly UserManager<User> userManager;
-
         private readonly SignInManager<User> signInManager;
+        private IHtmlSanitizer sanitizer;
 
         public UserManager<User> UserManager => userManager;
 
@@ -26,6 +27,8 @@ namespace FinanceApp.Controllers
         {
             userManager = _userManager;
             signInManager = _signInManager;
+
+            sanitizer = new HtmlSanitizer();
         }
 
         [HttpGet]
@@ -50,11 +53,11 @@ namespace FinanceApp.Controllers
             {
                 return View(model);
             }
-
+            
             var user = new User()
             {
-                Email = model.Email,
-                UserName = model.UserName
+                Email = sanitizer.Sanitize(model.Email),
+                UserName = sanitizer?.Sanitize(model.UserName),
             };
 
             var result = await userManager.CreateAsync(user, model.Password);
@@ -92,6 +95,9 @@ namespace FinanceApp.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
+            model.UserName = sanitizer.Sanitize(model.UserName);
+            model.Password = sanitizer.Sanitize(model.Password);
+
             if (!ModelState.IsValid)
             {
                 return View(model);
