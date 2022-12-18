@@ -4,6 +4,7 @@ using FinanceApp.Core.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
+using Ganss.XSS;
 
 namespace FinanceApp.Controllers
 {
@@ -16,12 +17,15 @@ namespace FinanceApp.Controllers
         private readonly IPaymentService paymentService;
         private readonly IPaymentTypeService paymentTypeService;
         private readonly UserManager<User> userManager;
+        private IHtmlSanitizer sanitizer;
 
         public PaymentsController(IPaymentService _paymentService, IPaymentTypeService _paymentTypeService, UserManager<User> _userManager)
         {
             paymentService = _paymentService;
             paymentTypeService = _paymentTypeService;
             userManager = _userManager;
+
+            sanitizer = new HtmlSanitizer();
         }
         public async Task<IActionResult> Index()
         {
@@ -80,11 +84,13 @@ namespace FinanceApp.Controllers
         [HttpPost]
         public async Task<IActionResult> AddCurrentPayment(PaymentViewModel model)
         {
+
+
             var currentUser = await userManager.GetUserAsync(this.User);
             var entry = new CurrentPayment()
             {
-                Name = model.Name,
-                Description = model.Description,
+                Name = sanitizer.Sanitize(model.Name),
+                Description = sanitizer.Sanitize(model.Description),
                 Cost = model.Cost,
                 IsSignular = model.IsSignular,
                 UserId = currentUser.Id,
@@ -111,7 +117,7 @@ namespace FinanceApp.Controllers
             var currentUser = await userManager.GetUserAsync(this.User);
             var entry = new PaymentType()
             {
-                Name = model.Name,
+                Name = sanitizer.Sanitize(model.Name),
                 IsActive = true,
                 UserId = currentUser.Id
             };
@@ -154,6 +160,8 @@ namespace FinanceApp.Controllers
         [HttpPost]
         public async Task<IActionResult> EditPaymentType(PaymentTypeViewModel model)
         {
+            model.Name = sanitizer.Sanitize(model.Name);
+
             var entity = await paymentTypeService.GetPaymentTypeAsync(model.Id);
             entity.Name = model.Name;
 

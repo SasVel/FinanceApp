@@ -3,6 +3,7 @@ using FinanceApp.Core.Contracts;
 using FinanceApp.Core.Helpers;
 using FinanceApp.Infrastructure.Models;
 using FinanceApp.Models;
+using Ganss.XSS;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -27,6 +28,7 @@ namespace FinanceApp.Controllers
             paymentService = _paymentService;
             paymentTypeService = _paymentTypeService;
             userManager = _userManager;
+
         }
 
         public async Task<IActionResult> Index()
