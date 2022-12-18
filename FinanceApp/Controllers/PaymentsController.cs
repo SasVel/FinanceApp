@@ -80,6 +80,8 @@ namespace FinanceApp.Controllers
         [HttpPost]
         public async Task<IActionResult> AddCurrentPayment(PaymentViewModel model)
         {
+
+
             var currentUser = await userManager.GetUserAsync(this.User);
             var entry = new CurrentPayment()
             {
